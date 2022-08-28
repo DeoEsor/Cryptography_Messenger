@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace NumberTheory.Symbols
+﻿namespace NumberTheory.Symbols
 {
 	public static class Euler
 	{
