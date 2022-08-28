@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using NumberTheory.Euclid;
+﻿using NumberTheory.Euclid;
 namespace NumberTheory.Extensions
 {
 	public static class NumberTheoryExtensions
