@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using NumberTheory.Extensions.Arithmetic;
+﻿using NumberTheory.Extensions.Arithmetic;
 using NumberTheory.Interfaces;
 using NUnit.Framework;
 
