@@ -1,7 +1,7 @@
 ﻿using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 
-namespace CryptographyLib.Symmetric.FeistelNetwork
+namespace CryptographyLib.Symmetric
 {
 	public abstract class SymmetricEncryptorBase : ISymmetricEncryptor
 	{
