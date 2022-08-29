@@ -4,12 +4,12 @@ using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 namespace CryptographyLib.CipherModes.Realization
 {
-	public class CFB : CipherModeBase
+	public class Cfb : CipherModeBase
 	{
-		public CFB(ISymmetricEncryptor symmetricEncryptor,long iv, int blockLength = 8)
+		public Cfb(ISymmetricEncryptor symmetricEncryptor,long iv, int blockLength = 8)
 			: base(symmetricEncryptor, blockLength)
 		{
-			IV = iv;
+			Iv = iv;
 		}
 
 		public override byte[] Encrypt(byte[] value)
@@ -20,7 +20,7 @@ namespace CryptographyLib.CipherModes.Realization
 
 			var result = new List<byte[]>();
 			
-			var prev = new BitArray(BitConverter.GetBytes(IV));
+			var prev = new BitArray(BitConverter.GetBytes(Iv));
 			
 			foreach (var openBlock in expander)
 			{
@@ -39,7 +39,7 @@ namespace CryptographyLib.CipherModes.Realization
 
 			var result = new List<byte[]>();
 			
-			var prev = new BitArray(BitConverter.GetBytes(IV));
+			var prev = new BitArray(BitConverter.GetBytes(Iv));
 			
 			foreach (var openBlock in expander)
 			{

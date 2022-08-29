@@ -22,7 +22,7 @@ namespace CryptographyLib.KeyExpanders
 		
 		public int BlockLength { get; protected init; }
 
-		protected BaseExpander(byte[] originalKey, IPadding padding = null!)
+		protected BaseExpander(byte[] originalKey, IPadding? padding = null!)
 		{
 			_originalKey = originalKey;
 			Padding = padding ?? new PKCS7();

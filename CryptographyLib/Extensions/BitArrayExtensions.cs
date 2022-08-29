@@ -8,7 +8,8 @@ public static class BitArrayExtensions
     {
         var res = new byte[bitArray.Length / 8 + 1];
         
-        bitArray.CopyTo(res,0);
+        bitArray
+            .CopyTo(res,0);
 
         return res;
     }
@@ -18,7 +19,9 @@ public static class BitArrayExtensions
         var result = new BitArray(bitArray.Count + other.Count);
 
         var i = 0;
-        foreach (var value in bitArray.Cast<bool>().Concat(other.Cast<bool>()))
+        foreach (var value in bitArray
+                     .Cast<bool>()
+                     .Concat(other.Cast<bool>()))
             result[i++] = value;
 
         return result;

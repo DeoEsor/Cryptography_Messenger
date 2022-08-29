@@ -5,14 +5,14 @@ using CryptographyLib.KeyExpanders;
 
 namespace CryptographyLib.CipherModes.Realization
 {
-	public class CTR : CipherModeBase
+	public class Ctr : CipherModeBase
 	{
 		public Func<int, int> CounterCreationRule { get; set; }
 		
-		public CTR(long iv, Func<int, int> counterCreationRule, ISymmetricEncryptor symmetricEncryptor,
+		public Ctr(long iv, Func<int, int> counterCreationRule, ISymmetricEncryptor symmetricEncryptor,
 			int blockLength = 8) : base(symmetricEncryptor, blockLength)
 		{
-			IV = iv;
+			Iv = iv;
 			CounterCreationRule = counterCreationRule;
 		}
 
@@ -21,7 +21,7 @@ namespace CryptographyLib.CipherModes.Realization
 			if (CounterCreationRule == null)
 				throw new ArgumentNullException(nameof(CounterCreationRule));
 
-			var iv = new BitArray(BitConverter.GetBytes(IV));
+			var iv = new BitArray(BitConverter.GetBytes(Iv));
 
 			var blocks = new SimpleExpander(value, BlockLength)
 				.Select(s => new BitArray(s))
@@ -48,7 +48,7 @@ namespace CryptographyLib.CipherModes.Realization
 			if (CounterCreationRule == null)
 				throw new ArgumentNullException(nameof(CounterCreationRule));
 
-			var iv = new BitArray(BitConverter.GetBytes(IV));
+			var iv = new BitArray(BitConverter.GetBytes(Iv));
 
 			var blocks = new SimpleExpander(value, BlockLength)
 				.Select(s => new BitArray(s))

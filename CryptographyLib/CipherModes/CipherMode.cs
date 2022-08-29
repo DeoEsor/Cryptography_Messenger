@@ -23,13 +23,13 @@ namespace CryptographyLib.CipherModes
 		public static CipherModeBase CreateInstance(Mode mode, ISymmetricEncryptor symmetricEncryptor, params object[] values)
 			=> mode switch
 		{
-			Mode.ECB => ECB(symmetricEncryptor, values),
-			Mode.CBC => CBC(symmetricEncryptor, values),
-			Mode.CFB => CFB(symmetricEncryptor, values),
-			Mode.OFB => OFB(symmetricEncryptor, values),
-			Mode.CTR => CTR(symmetricEncryptor, values),
-			Mode.RD => RD(symmetricEncryptor, values),
-			Mode.RDH => RDH(symmetricEncryptor, values),
+			Mode.ECB => Ecb(symmetricEncryptor, values),
+			Mode.CBC => Cbc(symmetricEncryptor, values),
+			Mode.CFB => Cfb(symmetricEncryptor, values),
+			Mode.OFB => Ofb(symmetricEncryptor, values),
+			Mode.CTR => Ctr(symmetricEncryptor, values),
+			Mode.RD => Rd(symmetricEncryptor, values),
+			Mode.RDH => Rdh(symmetricEncryptor, values),
 			_ => throw new ArgumentOutOfRangeException(nameof(mode), mode, null)
 		};
 	}

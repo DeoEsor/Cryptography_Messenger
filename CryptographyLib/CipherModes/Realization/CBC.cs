@@ -4,11 +4,11 @@ using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 namespace CryptographyLib.CipherModes.Realization
 {
-	public class CBC : CipherModeBase
+	public class Cbc : CipherModeBase
 	{
 		private ulong _iv;
 
-		public CBC(ISymmetricEncryptor encryptor, ulong iv, int blocksCount) 
+		public Cbc(ISymmetricEncryptor encryptor, ulong iv, int blocksCount) 
 			: base(encryptor, blocksCount)
 		{
 			_iv = iv;

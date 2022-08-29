@@ -91,7 +91,7 @@ namespace CryptographyLib.Symmetric.FeistelNetwork
 			var result = new byte[value.Length];
 
 			for (var i = 0; i < value.Length; i++)
-				result[i] = (byte)(value[value[i]]);
+				result[i] = (byte)value[value[i]];
 
 			return result;
 		}
@@ -133,7 +133,7 @@ namespace CryptographyLib.Symmetric.FeistelNetwork
 			var result = new byte[value.Length];
 
 			for (var i = 0; i < value.Length; i++)
-				result[i] = (byte)(value[value[i]]);
+				result[i] = (byte)value[value[i]];
 
 			return result;
 		}

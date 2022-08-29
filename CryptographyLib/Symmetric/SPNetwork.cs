@@ -2,12 +2,12 @@
 using CryptographyLib.Symmetric.FeistelNetwork;
 namespace CryptographyLib.Symmetric.SPNetwork
 {
-	public class SPNetwork : SymmetricEncryptorBase
+	public class SpNetwork : SymmetricEncryptorBase
 	{
 
-		private SBlock SBlock = new SBlock();
-		private PBlock PBlock = new PBlock();
-		public SPNetwork(IExpandKey expandKey) 
+		private SBlock _sBlock = new SBlock();
+		private PBlock _pBlock = new PBlock();
+		public SpNetwork(IExpandKey expandKey) 
 			: base(expandKey) {}
 
 		public override byte[] Encrypt(byte[] value)
@@ -32,7 +32,7 @@ namespace CryptographyLib.Symmetric.SPNetwork
 
 			foreach (byte[] partValue in expandValue)
 			{
-				sblockRes.AddRange( SBlock.Encrypt(partValue, roundKeys.Current));
+				sblockRes.AddRange( _sBlock.Encrypt(partValue, roundKeys.Current));
 				if (!roundKeys.MoveNext())
 					break;
 			}
@@ -40,7 +40,7 @@ namespace CryptographyLib.Symmetric.SPNetwork
 			byte[] a = null!;
 			
 			if (roundKeys.Current != null)
-				a = PBlock.Decrypt(BitConverter.ToInt32(sblockRes.ToArray()), roundKeys.Current);
+				a = _pBlock.Decrypt(BitConverter.ToInt32(sblockRes.ToArray()), roundKeys.Current);
 			
 			return a;
 		}
@@ -53,7 +53,7 @@ namespace CryptographyLib.Symmetric.SPNetwork
 
 			foreach (byte[] partValue in expandValue)
 			{
-				sblockRes.AddRange( SBlock.Encrypt(partValue, roundKeys.Current));
+				sblockRes.AddRange( _sBlock.Encrypt(partValue, roundKeys.Current));
 				if (!roundKeys.MoveNext())
 					break;
 			}
@@ -61,7 +61,7 @@ namespace CryptographyLib.Symmetric.SPNetwork
 			byte[] a = null!;
 			
 			if (roundKeys.Current != null)
-				a = PBlock.Decrypt(sblockRes.ToArray(), roundKeys.Current);
+				a = _pBlock.Decrypt(sblockRes.ToArray(), roundKeys.Current);
 			
 			return a;
 		}

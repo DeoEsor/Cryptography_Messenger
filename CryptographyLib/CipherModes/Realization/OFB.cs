@@ -5,12 +5,12 @@ using CryptographyLib.KeyExpanders;
 
 namespace CryptographyLib.CipherModes.Realization
 {
-	public class OFB : CipherModeBase
+	public class Ofb : CipherModeBase
 	{
-		public OFB(ISymmetricEncryptor symmetricEncryptor,long iv, int BlockLength = 8) 
-			: base(symmetricEncryptor, BlockLength)
+		public Ofb(ISymmetricEncryptor symmetricEncryptor,long iv, int blockLength = 8) 
+			: base(symmetricEncryptor, blockLength)
 		{
-			IV = iv;
+			Iv = iv;
 		}
 
 		public override byte[] Encrypt(byte[] value)
@@ -21,7 +21,7 @@ namespace CryptographyLib.CipherModes.Realization
 
 			var result = new List<byte[]>();
 			
-			var prev = new BitArray(BitConverter.GetBytes(IV));
+			var prev = new BitArray(BitConverter.GetBytes(Iv));
 			
 			//Calculate all prevs and parallel
 			
@@ -42,7 +42,7 @@ namespace CryptographyLib.CipherModes.Realization
 
 			var result = new List<byte[]>();
 			
-			var prev = new BitArray(BitConverter.GetBytes(IV));
+			var prev = new BitArray(BitConverter.GetBytes(Iv));
 			
 			foreach (var openBlock in expander)
 			{

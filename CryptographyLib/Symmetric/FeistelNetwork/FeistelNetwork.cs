@@ -10,8 +10,7 @@ namespace CryptographyLib.Symmetric.FeistelNetwork
 	/// </summary>
 	public class FeistelNetwork : SymmetricEncryptorBase
 	{
-		private static readonly byte[] E = new byte[]
-		{
+		private static readonly byte[] E = {
 				32,	1,	2,	3,	4,	5,
 				4,	5,	6,	7,	8,	9,
 				8,	9,	10,	11,	12,	13,
@@ -27,7 +26,7 @@ namespace CryptographyLib.Symmetric.FeistelNetwork
 			get;
 			set;
 		}
-		private IPadding Padding = new PKCS7();
+		private IPadding _padding = new PKCS7();
 
 		public FeistelNetwork(  IExpandKey expandKey,
 								ISymmetricEncryptor symmetricEncryptor = null!)
@@ -39,7 +38,7 @@ namespace CryptographyLib.Symmetric.FeistelNetwork
 
 		public override byte[] Encrypt(byte[] value)
 		{
-			value = Padding.ApplyPadding(value, 4);
+			value = _padding.ApplyPadding(value, 4);
 			BitArray l = new BitArray(Enumerable.Take(value, value.Length / 2).ToArray()), 
 				   r = new BitArray(Enumerable.TakeLast(value, value.Length / 2).ToArray());
 
@@ -56,7 +55,7 @@ namespace CryptographyLib.Symmetric.FeistelNetwork
 
 		public override byte[] Decrypt(byte[] value)
 		{
-			value = Padding.ApplyPadding(value, 4);
+			value = _padding.ApplyPadding(value, 4);
 			byte[]  l = Enumerable.Take(value, value.Length / 2).ToArray(), 
 					r = Enumerable.TakeLast(value, value.Length / 2).ToArray();
 

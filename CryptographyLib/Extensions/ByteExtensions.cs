@@ -23,15 +23,15 @@ namespace CryptographyLib.Extensions
 		/// Separates array of bytes into byte blocks
 		/// </summary>
 		/// <param name="value">array of bytes</param>
-		/// <param name="BlockLength">Length of block (1,2,4,8,16 and etc.)</param>
-		/// <returns>Blocks of bytes with <paramref name="BlockLength"/> lenght</returns>
-		public static IEnumerable<byte[]> GetByteBlocks(this byte[] value, [Range(1,8)] int BlockLength = 1)
+		/// <param name="blockLength">Length of block (1,2,4,8,16 and etc.)</param>
+		/// <returns>Blocks of bytes with <paramref name="blockLength"/> lenght</returns>
+		public static IEnumerable<byte[]> GetByteBlocks(this byte[] value, [Range(1,8)] int blockLength = 1)
 		{
 			int current = 0;
-			List<byte> list = new List<byte>(BlockLength);
+			List<byte> list = new List<byte>(blockLength);
 			while (current < value.Length)
 			{
-				for (int i = 0; i < BlockLength; i++)
+				for (int i = 0; i < blockLength; i++)
 					list.Add(value[current++]);
 				
 				yield return list.ToArray();
@@ -53,23 +53,23 @@ namespace CryptographyLib.Extensions
 		/// </summary>
 		/// <param name="_value">array of bytes</param>
 		/// <returns>Count of bites</returns>
-		public static int CountOfBites(this int _value) 
-			=> Math.ILogB(_value.MaxValuableBit()) + 1;
+		public static int CountOfBites(this int value) 
+			=> Math.ILogB(value.MaxValuableBit()) + 1;
 
 		/// <summary>
 		/// Returns max valuable bit in array of bytes
 		/// </summary>
-		/// <param name="_value">array of bytes</param>
+		/// <param name="value">array of bytes</param>
 		/// <returns>value of bit</returns>
-		public static int MaxValuableBit(this int _value)
+		public static int MaxValuableBit(this int value)
 		{
-			var value = _value;
-			value |= (value >>  1);
-			value |= (value >>  2);
-			value |= (value >>  4);
-			value |= (value >>  8);
-			value |= (value >> 16);
-			return value - (value >> 1);
+			var val = value;
+			val |= val >>  1;
+			val |= val >>  2;
+			val |= val >>  4;
+			val |= val >>  8;
+			val |= val >> 16;
+			return val - (val >> 1);
 		}
 		
 		/// <summary>
@@ -136,10 +136,10 @@ namespace CryptographyLib.Extensions
 		{
 			long result = Int64.MinValue;
 
-			foreach (var VARIABLE in value)
+			foreach (var variable in value)
 			{
 				result <<= 4;
-				result |= VARIABLE;
+				result |= variable;
 			}
 
 			return result;
@@ -149,10 +149,10 @@ namespace CryptographyLib.Extensions
 		{
 			int result = Int32.MinValue;
 
-			foreach (var VARIABLE in value)
+			foreach (var variable in value)
 			{
 				result <<= 4;
-				result |= VARIABLE;
+				result |= variable;
 			}
 
 			return result;
@@ -162,10 +162,10 @@ namespace CryptographyLib.Extensions
 		{
 			ushort result = UInt16.MaxValue;
 
-			foreach (var VARIABLE in value)
+			foreach (var variable in value)
 			{
 				result <<= 4;
-				result |= VARIABLE;
+				result |= variable;
 			}
 
 			return result;

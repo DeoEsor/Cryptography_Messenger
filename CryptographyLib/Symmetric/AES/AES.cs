@@ -1,5 +1,5 @@
 ﻿namespace CryptographyLib.Symmetric.AES;
 
-public partial class AES
+public partial class Aes
 {
 }

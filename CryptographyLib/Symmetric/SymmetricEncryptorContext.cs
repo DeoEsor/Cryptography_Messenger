@@ -21,12 +21,15 @@ namespace CryptographyLib.Symmetric
 
 		public byte[] Encrypt(byte[] value) =>  Mode.Encrypt(value);
 		public byte[] Decrypt(byte[] value) =>  Mode.Decrypt(value);
-		public async Task<byte[]> EncryptAsync(byte[] value) =>  Mode.Encrypt(value);
-		public async Task<byte[]> DecryptAsync(byte[] value) =>  Mode.Decrypt(value);
+		public async Task<byte[]> EncryptAsync(byte[] value) => await  Task.Run(() => Mode.Encrypt(value));
+		public async Task<byte[]> DecryptAsync(byte[] value) => await  Task.Run(() => Mode.Decrypt(value));
 		
 		public async Task AsyncEncryptFile(string pathFileInput, string  pathFileOutput)
 		{
-			if (File.Exists(pathFileOutput)) File.Delete(pathFileOutput);
+			var info = new FileInfo(pathFileInput);
+			
+			if (!info.Exists || info.Length == 0)
+				throw new ArgumentException($"File {pathFileInput} is empty");
 
 			var input = new ConcurrentQueue<byte>();
 			

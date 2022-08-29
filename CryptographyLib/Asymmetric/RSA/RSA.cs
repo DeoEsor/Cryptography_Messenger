@@ -5,30 +5,35 @@ using CryptographyLib.KeyGenerators;
 
 namespace CryptographyLib.Asymmetric.RSA;
 
-public class RSA : IAsymmetricEncryptor
+public class Rsa : IAsymmetricEncryptor
 {
     public AsymmetricKeyGenerator Generator { get; set; }
     public IExpandKey ExpandKey { get; set; }
 
-    public RSA(IExpandKey expandKey, RSAKeyGenerator generator = null!)
+    public Rsa(IExpandKey expandKey, RsaKeyGenerator? generator = null!)
     {
         ExpandKey = expandKey;
-        Generator = generator ?? new RSAKeyGenerator(65537);
+        Generator = generator ?? 
+                    new RsaKeyGenerator(65537, new Lazy<((BigInteger, BigInteger), (BigInteger, BigInteger))>());
     }
     
     public byte[] Encrypt(byte[] value)
     {
         var text = new BigInteger(value);
+        
         var e = Generator
             .CreatePublicKey()
             .Take(Generator.CreatePublicKey().Length / 2)
             .ToArray();
+        
         var n = Generator
             .CreatePublicKey()
             .TakeLast(Generator.CreatePublicKey().Length / 2)
             .ToArray();
 
-        return BigInteger.ModPow(text,new BigInteger(e), new BigInteger(n)).ToByteArray();
+        return BigInteger
+            .ModPow(text,new BigInteger(e), new BigInteger(n))
+            .ToByteArray();
     }
 
     public byte[] Decrypt(byte[] value)
@@ -38,12 +43,15 @@ public class RSA : IAsymmetricEncryptor
             .CreatePrivateKey()
             .Take(Generator.CreatePublicKey().Length / 2)
             .ToArray();
+        
         var n = Generator
             .CreatePrivateKey()
             .TakeLast(Generator.CreatePublicKey().Length / 2)
             .ToArray();
 
-        return BigInteger.ModPow(text,new BigInteger(d), new BigInteger(n)).ToByteArray();
+        return BigInteger
+            .ModPow(text,new BigInteger(d), new BigInteger(n))
+            .ToByteArray();
     }
 
 }

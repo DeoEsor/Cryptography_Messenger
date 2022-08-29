@@ -6,13 +6,13 @@ using NUnit.Framework;
 
 namespace CryptographyLib.CipherModes.Realization
 {
-	public class RD : CipherModeBase
+	public class Rd : CipherModeBase
 	{
 		public ulong Delta { get; set; }
-		public RD(ISymmetricEncryptor symmetricEncryptor, long iv, int BlockLength = 8, ulong rd = UInt64.MinValue) 
-			: base(symmetricEncryptor, BlockLength)
+		public Rd(ISymmetricEncryptor symmetricEncryptor, long iv, int blockLength = 8, ulong rd = UInt64.MinValue) 
+			: base(symmetricEncryptor, blockLength)
 		{
-			IV = iv;
+			Iv = iv;
 			Delta = rd == UInt64.MinValue ? TestContext.CurrentContext.Random.NextULong() : rd;
 			/*
 			 * if (Delta % 2 == 0)
@@ -22,7 +22,7 @@ namespace CryptographyLib.CipherModes.Realization
 
 		public override byte[] Encrypt(byte[] value)
 		{
-			var iv = new BitArray(BitConverter.GetBytes(IV));
+			var iv = new BitArray(BitConverter.GetBytes(Iv));
 
 			var blocks = new SimpleExpander(value, BlockLength)
 				.Select(s => new BitArray(s))
@@ -47,7 +47,7 @@ namespace CryptographyLib.CipherModes.Realization
 						result[i] = SymmetricEncryptor
 							.Encrypt(
 								BitConverter // прикольно то, что сейчас я все понимаю, но после сна пониманию звезда
-									.GetBytes(IV)
+									.GetBytes(Iv)
 									.ToBitArray()
 									.Concat(BitConverter.GetBytes(Delta).ToBitArray())
                                               									.ToBytes()

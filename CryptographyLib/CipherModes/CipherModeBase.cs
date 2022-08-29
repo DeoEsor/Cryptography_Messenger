@@ -8,7 +8,7 @@ namespace CryptographyLib.CipherModes
 		protected readonly ISymmetricEncryptor SymmetricEncryptor;
 		
 		public int BlockLength { get; set; }
-		public long IV { get; set; }
+		public long Iv { get; set; }
 
 		protected IEncryptor Encryptor
 		{

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Authentication;
 using CryptographyLib.Extensions;
 using CryptographyLib.Interfaces;
@@ -7,14 +8,14 @@ using NUnit.Framework;
 
 namespace CryptographyLib.CipherModes.Realization
 {
-	public class RDH : CipherModeBase
+	public class Rdh : CipherModeBase
 	{
 		public byte[] Hash { get; set; }
 		public ulong Delta { get; set; }
-		public RDH(ISymmetricEncryptor symmetricEncryptor, long iv, byte[] hash,  int BlockLength = 8, ulong rd = UInt64.MinValue)
-			: base(symmetricEncryptor, BlockLength)
+		public Rdh(ISymmetricEncryptor symmetricEncryptor, long iv, [NotNull] byte[] hash,  int blockLength = 8, ulong rd = UInt64.MinValue)
+			: base(symmetricEncryptor, blockLength)
 		{
-			IV = iv;
+			Iv = iv;
 			Delta = rd == UInt64.MinValue ? TestContext.CurrentContext.Random.NextULong() : rd;
 			if (hash.Length == 128)
 				Hash = hash;
@@ -26,7 +27,7 @@ namespace CryptographyLib.CipherModes.Realization
 		
 		public override byte[] Encrypt(byte[] value)
 		{
-			var iv = new BitArray(BitConverter.GetBytes(IV));
+			var iv = new BitArray(BitConverter.GetBytes(Iv));
 			var hash = new BitArray(Hash);
 
 			var blocks = new SimpleExpander(value, BlockLength)
@@ -52,7 +53,7 @@ namespace CryptographyLib.CipherModes.Realization
 						result[i] = SymmetricEncryptor
 							.Encrypt(
 								BitConverter // прикольно то, что сейчас я все понимаю, но после сна пониманию звезда
-									.GetBytes(IV)
+									.GetBytes(Iv)
 									.ToBitArray()
 									.Concat(BitConverter.GetBytes(Delta).ToBitArray())
 									.Concat(new BitArray(Hash))
