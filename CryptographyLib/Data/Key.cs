@@ -1,4 +1,7 @@
-﻿namespace CryptographyLib.Data;
+﻿using System.Dynamic;
+using System.Numerics;
+
+namespace CryptographyLib.Data;
 
 public sealed class Key
 {
@@ -13,6 +16,37 @@ public sealed class Key
 	
 	public static Key CreateAsymmetricKey(byte[] publicKey, byte[] privateKey)
 		=> new(publicKey, privateKey);
+
+	/// <summary>
+	/// format of serialization			-> [first 4 bytes - length of array]
+	/// <br/>
+	/// continues with foreach value	-> [first 4 bytes - count of bytes that contains value, array of bytes that representating BigInt] 
+	/// </summary>
+	/// <param name="publicKey"></param>
+	/// <param name="privateKey"></param>
+	/// <returns></returns>
+	public static Key CreateAsymmetricKey(BigInteger[] publicKey, BigInteger[] privateKey)
+	{
+		var publicBytes = new List<byte>(BitConverter.GetBytes(publicKey.Length)); 
+		var privateBytes = new List<byte>(BitConverter.GetBytes(privateKey.Length));
+
+		foreach (var value in publicKey)
+		{
+			var bytes = value.ToByteArray();
+			publicBytes.AddRange(BitConverter.GetBytes(bytes.Length));
+			publicBytes.AddRange(bytes);
+		}
+		
+		foreach (var value in privateKey)
+		{
+			var bytes = value.ToByteArray();
+			privateBytes.AddRange(BitConverter.GetBytes(bytes.Length));
+			privateBytes.AddRange(bytes);
+		}
+		
+		
+		return new Key(publicBytes.ToArray(), privateBytes.ToArray());
+	}
 	
 	private Key(byte[] symmetricKey)
 	{
@@ -34,4 +68,20 @@ public sealed class Key
 	public byte[] PrivateKey { get; } = null!;
 
 	public KeyTypeEnum KeyType { get; }
+
+	public static BigInteger[] GetBigInts(byte[] bytes)
+	{
+		var res = new BigInteger[BitConverter.ToInt32(bytes.AsSpan(0, 4))];
+		var startIndex = 4;
+
+		for (var i = 0; i < res.Length; i++)
+		{
+			var length = BitConverter.ToInt32(bytes.AsSpan(startIndex, 4));
+			var value = new BigInteger(bytes.AsSpan(startIndex + 4, length));
+			startIndex += 4 + length;
+			res[i] = value;
+		}
+		
+		return res;
+	}
 }
