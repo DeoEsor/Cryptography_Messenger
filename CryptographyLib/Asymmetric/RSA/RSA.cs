@@ -3,7 +3,7 @@ using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 using CryptographyLib.KeyGenerators;
 
-namespace CryptographyLib.Symmetric.RSA;
+namespace CryptographyLib.Asymmetric.RSA;
 
 public class RSA : IAsymmetricEncryptor
 {
