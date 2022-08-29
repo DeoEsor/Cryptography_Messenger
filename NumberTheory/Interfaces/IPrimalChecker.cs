@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace NumberTheory.Interfaces;
+﻿namespace NumberTheory.Interfaces;
 
 public interface IPrimalChecker
 { 

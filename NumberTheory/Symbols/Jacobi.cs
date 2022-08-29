@@ -1,7 +1,4 @@
-﻿using System;
-using System.Numerics;
-using NumberTheory.Euclid;
-namespace NumberTheory.Symbols;
+﻿namespace NumberTheory.Symbols;
 
 public static class Jacobi
 {

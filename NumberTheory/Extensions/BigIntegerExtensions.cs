@@ -60,4 +60,32 @@ public static class BigIntegerExtensions
             q = extra;
         }
     }
+    
+    public static BigInteger MultMod(BigInteger a, BigInteger b, BigInteger mod)
+    {
+        BigInteger res = 0; // Initialize result
+        a %= mod;
+		
+        while (b > 0)
+        {
+            if ((b & 1) > 0)
+                res = (res + a) % mod;
+            a = (2 * a) % mod;
+            b >>= 1; // b = b / 2
+        }
+        return res;
+    }
+
+    public static BigInteger FastPow(BigInteger num, BigInteger pow, BigInteger mod) // a^b mod n - то же что ниже но быстрее
+    {
+        BigInteger res = 1;
+        while (pow > 0)
+        {
+            if (pow % 2 == 1) res = (res * num) % mod;
+            num = (num * num) % mod;
+            pow >>= 1;
+        }
+
+        return res;
+    }
 }
