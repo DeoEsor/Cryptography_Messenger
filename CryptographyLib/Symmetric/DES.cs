@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using CryptographyLib.Interfaces;
+﻿using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
+using CryptographyLib.Symmetric.FeistelNetwork;
 
-namespace CryptographyLib.Symmetric.FeistelNetwork;
+namespace CryptographyLib.Symmetric;
 public sealed class DES : ISymmetricEncryptor
 {
 	public IExpandKey ExpandKey { get; }
 
-	private FeistelNetwork _feistelNetwork;
+	private FeistelNetwork.FeistelNetwork _feistelNetwork;
 	private PBlock _pBlock = new PBlock();
 
 	public DES(IExpandKey expandKey, ISymmetricEncryptor symmetricEncryptor = null!)
 	{
-		_feistelNetwork = new FeistelNetwork(expandKey, symmetricEncryptor);
+		_feistelNetwork = new FeistelNetwork.FeistelNetwork(expandKey, symmetricEncryptor);
 		_feistelNetwork.Rounds = 16;
 	}
 
