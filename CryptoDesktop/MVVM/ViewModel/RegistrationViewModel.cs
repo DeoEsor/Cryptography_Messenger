@@ -7,23 +7,21 @@ using CryptoDesktop.Annotations;
 using CryptoDesktop.MVVM.Commands;
 using CryptoDesktop.MVVM.Model;
 using CryptoDesktop.UserControls;
-using CryptoServices;
 using DryIoc;
-using СryptoClient;
 
 namespace CryptoDesktop.MVVM.ViewModel;
 
 public sealed class RegistrationViewModel : INotifyPropertyChanged
 {
     public Window Owner { get; set; }
-    public CryptoClient CryptoClient { get; set; }
+    public AuthClient CryptoClient { get; set; }
     public ICommand LoginCommand { get; set; }
     public ICommand RegisterCommand { get; set; }
     public string UserName { get; set; } = "Username";
     public RegistrationViewModel(Window owner)
     {
         Owner = owner;
-        CryptoClient = App.Container.Resolve<CryptoClient>();
+        CryptoClient = App.Container.Resolve<AuthClient>();
         LoginCommand = new RelayCommand(Login);
         RegisterCommand = new RelayCommand(Register);
     }

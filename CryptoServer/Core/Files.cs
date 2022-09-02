@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Metadata;
-
-namespace CryptoServer.Core;
+﻿namespace CryptoServer.Core;
 
 public class Files
 {

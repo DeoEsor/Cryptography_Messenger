@@ -1,4 +1,4 @@
-﻿namespace NumberTheory.Extensions.Arithmetic;
+namespace NumberTheory.Extensions.Arithmetic;
 
 public static partial class ArithmeticExtensions
 {

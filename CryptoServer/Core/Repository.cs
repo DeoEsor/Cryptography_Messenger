@@ -1,6 +1,5 @@
 ﻿using CryptoServer.Core;
 using CryptoServer.DBContexts;
-using Microsoft.EntityFrameworkCore;
 
 namespace CryptoServer.Interfaces;
 
