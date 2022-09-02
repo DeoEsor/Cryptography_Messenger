@@ -15,6 +15,7 @@ public sealed class RSAKeyGenerator : AsymmetricKeyGenerator
 
 
     private Lazy<((BigInteger, BigInteger), (BigInteger, BigInteger))> GeneratedPair;
+    
     public BigInteger E
     {
         get => _e;

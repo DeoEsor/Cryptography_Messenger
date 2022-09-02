@@ -2,62 +2,61 @@
 using CryptographyLib.Extensions;
 using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
-namespace CryptographyLib.CipherModes.Realization
-{
-	public class CBC : CipherModeBase
-	{
-		private ulong _iv;
+namespace CryptographyLib.CipherModes.Realization;
 
-		public CBC(ISymmetricEncryptor encryptor, ulong iv, int blocksCount) 
-			: base(encryptor, blocksCount)
-		{
-			_iv = iv;
-		}
+public class CBC : CipherModeBase
+{
+	private ulong _iv;
+
+	public CBC(ISymmetricEncryptor encryptor, ulong iv, int blocksCount) 
+		: base(encryptor, blocksCount)
+	{
+		_iv = iv;
+	}
 		
-		public override byte[] Encrypt(byte[] value)
-		{
-			var expander = 
-				new SimpleExpander(value, value.Length / 4)
+	public override byte[] Encrypt(byte[] value)
+	{
+		var expander = 
+			new SimpleExpander(value, value.Length / 4)
 				.ToList();
 			
-			var result = new List<byte[]>();
-			var ivVector = new BitArray(BitConverter.GetBytes(_iv));
-			BitArray resultBlock = null!;
+		var result = new List<byte[]>();
+		var ivVector = new BitArray(BitConverter.GetBytes(_iv));
+		BitArray resultBlock = null!;
 
-			foreach (var block in expander)
-			{
-				var temp = new BitArray(block);
-				var xor = resultBlock == null ? ivVector.Xor(temp) : resultBlock.Xor(temp);
-				resultBlock = Encryptor
-					.Encrypt(xor.ToBytes())
-					.ToBitArray();
-				result.Add(resultBlock.ToBytes());
-			}
-
-			return result.SelectMany(s => s).ToArray();
-		}
-
-		public override byte[] Decrypt(byte[] value)
+		foreach (var block in expander)
 		{
-			var expander = 
-				new SimpleExpander(value, value.Length / 4)
-					.ToList();
-			
-			var result = new List<byte[]>();
-			var ivVector = new BitArray(BitConverter.GetBytes(_iv));
-			BitArray resultBlock = null!;
-
-			foreach (var block in expander)
-			{
-				var temp = new BitArray(block);
-				var xor = resultBlock == null ? ivVector.Xor(temp) : resultBlock.Xor(temp);
-				resultBlock = Decryptor
-					.Decrypt(xor.ToBytes())
-					.ToBitArray();
-				result.Add(resultBlock.ToBytes());
-			}
-
-			return result.SelectMany(s => s).ToArray();
+			var temp = new BitArray(block);
+			var xor = resultBlock == null ? ivVector.Xor(temp) : resultBlock.Xor(temp);
+			resultBlock = Encryptor
+				.Encrypt(xor.ToBytes())
+				.ToBitArray();
+			result.Add(resultBlock.ToBytes());
 		}
+
+		return result.SelectMany(s => s).ToArray();
+	}
+
+	public override byte[] Decrypt(byte[] value)
+	{
+		var expander = 
+			new SimpleExpander(value, value.Length / 4)
+				.ToList();
+			
+		var result = new List<byte[]>();
+		var ivVector = new BitArray(BitConverter.GetBytes(_iv));
+		BitArray resultBlock = null!;
+
+		foreach (var block in expander)
+		{
+			var temp = new BitArray(block);
+			var xor = resultBlock == null ? ivVector.Xor(temp) : resultBlock.Xor(temp);
+			resultBlock = Decryptor
+				.Decrypt(xor.ToBytes())
+				.ToBitArray();
+			result.Add(resultBlock.ToBytes());
+		}
+
+		return result.SelectMany(s => s).ToArray();
 	}
 }
