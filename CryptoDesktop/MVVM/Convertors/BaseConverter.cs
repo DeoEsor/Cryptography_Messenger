@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
-using Google.Protobuf.Reflection;
 
 namespace CryptoDesktop.MVVM.Convertors;
 
