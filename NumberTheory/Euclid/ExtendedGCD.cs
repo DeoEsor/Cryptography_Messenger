@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace NumberTheory.Euclid
+﻿namespace NumberTheory.Euclid
 {
 	public static class ExtendedGCD
 	{

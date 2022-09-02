@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using NumberTheory.Extensions.Arithmetic;
-using NumberTheory.Interfaces;
-using NumberTheory.Symbols;
+﻿using NumberTheory.Interfaces;
 
 namespace NumberTheory.PrimalCheckers;
 

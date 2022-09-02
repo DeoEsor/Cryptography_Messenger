@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using static System.Math;
-
-namespace NumberTheory.Extensions.Arithmetic
+﻿namespace NumberTheory.Extensions.Arithmetic
 {
 	public static partial class ArithmeticExtensions
 	{ 

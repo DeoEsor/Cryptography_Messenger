@@ -6,7 +6,6 @@ using CryptographyLib.KeyExpanders;
 using CryptographyLib.Paddings;
 using CryptographyLib.Symmetric;
 using CryptographyLib.Symmetric.AES;
-using CryptographyLib.Symmetric.FeistelNetwork;
 using NUnit.Framework;
 
 namespace CryptoTest.SymmetricAlgos;
