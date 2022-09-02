@@ -1,39 +1,38 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace CryptoDesktop
+namespace CryptoDesktop;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+	public MainWindow()
 	{
-		public MainWindow()
-		{
-			InitializeComponent();
-		}
+		InitializeComponent();
+	}
 
-		private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			if (e.LeftButton == MouseButtonState.Pressed)
-				DragMove();
-		}
+	private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+	{
+		if (e.LeftButton == MouseButtonState.Pressed)
+			DragMove();
+	}
 
-		private void Close_Click(object sender, RoutedEventArgs e)
-		{
-			Application.Current.Shutdown();
-		}
+	private void Close_Click(object sender, RoutedEventArgs e)
+	{
+		Application.Current.Shutdown();
+	}
 
-		private void Maximaze_Click(object sender, RoutedEventArgs e)
-		{
-			Application.Current.MainWindow.WindowState = 
-				Application.Current.MainWindow.WindowState != WindowState.Maximized ?
-					WindowState.Maximized : WindowState.Normal;
-		}
+	private void Maximaze_Click(object sender, RoutedEventArgs e)
+	{
+		Application.Current.MainWindow.WindowState = 
+			Application.Current.MainWindow.WindowState != WindowState.Maximized ?
+				WindowState.Maximized : WindowState.Normal;
+	}
 
-		private void Minimaze_Click(object sender, RoutedEventArgs e)
-		{
-			Application.Current.MainWindow.WindowState = WindowState.Minimized;
-		}
+	private void Minimaze_Click(object sender, RoutedEventArgs e)
+	{
+		Application.Current.MainWindow.WindowState = WindowState.Minimized;
 	}
 }
