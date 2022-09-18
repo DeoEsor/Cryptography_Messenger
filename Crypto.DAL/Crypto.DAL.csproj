@@ -23,12 +23,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Data\MongoDbClient.cs">
-        <Link>Core\MongoDbClient.cs</Link>
-      </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
       <Folder Include="Repositories" />
     </ItemGroup>
 
