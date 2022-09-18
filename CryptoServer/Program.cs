@@ -1,6 +1,6 @@
 //using CryptoServer.Services;
 
-using CryptoServer.Interfaces;
+using CryptoServer.Core;
 using CryptoServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);

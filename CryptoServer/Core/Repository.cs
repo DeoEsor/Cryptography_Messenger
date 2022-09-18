@@ -1,23 +1,22 @@
-﻿using CryptoServer.Core;
+﻿using Crypto.Infrastructure.Abstractions;
 using CryptoServer.DBContexts;
 
-namespace CryptoServer.Interfaces;
+namespace CryptoServer.Core;
 
 public class Repository : IRepository<User>, IRepository<Chat>, IRepository<Message>
 {
 
-    public User ChangeStatus(string Username,byte[] Password, bool IsOnlineNow)
+    public User ChangeStatus(string username, byte[] password, bool isOnlineNow)
     {
         using var a = new UsersDb();
 
-        var user = a.Users.FirstOrDefault(user => user.Username == Username && user.Password == Password);
-        if (user != null)
-        {
-            user.IsOnline = IsOnlineNow;
-            a.SaveChanges();
-        }
+        var user = a.Users.FirstOrDefault(user => user.Username == username && user.Password == password);
+        if (user == null) return null!;
+        user.IsOnline = isOnlineNow;
+        a.SaveChanges();
         return user;
     }
+    
     List<User> IRepository<User>.GetDataList()
     {
         using var a = new UsersDb();

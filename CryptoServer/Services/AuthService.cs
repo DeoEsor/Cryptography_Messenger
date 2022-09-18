@@ -1,6 +1,8 @@
-﻿using CryptoServer.Interfaces;
+﻿using Crypto.Infrastructure.Abstractions;
+using CryptoServer.Core;
 using CryptoServices;
 using Grpc.Core;
+using User = CryptoServices.User;
 
 namespace CryptoServer.Services;
 
@@ -26,7 +28,7 @@ public sealed class AuthService : CryptoServices.AuthService.AuthServiceBase
         {
             var random = new Random();
             _logger.LogInformation($"Getted to register {request.Username}");
-            if (((IRepository<User>)_db).GetDataList().FirstOrDefault(s => s.Username == request.Username) != null)
+            if ((_db as IRepository<User>)?.GetDataList().FirstOrDefault(s => s.Username == request.Username) != null)
             {
                 reply.StatusCode = (int)StatusCode.AlreadyExists;
                 reply.Comment = "Login reserved";
