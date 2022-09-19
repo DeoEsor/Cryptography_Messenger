@@ -1,13 +1,16 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CryptoDesktop.Annotations;
+using CryptoDesktop.gRPC;
 using CryptoDesktop.MVVM.Commands;
 using CryptoDesktop.MVVM.Model;
 using CryptoDesktop.UserControls;
 using DryIoc;
+using Grpc.Core;
 
 namespace CryptoDesktop.MVVM.ViewModel;
 
@@ -32,29 +35,24 @@ public sealed class RegistrationViewModel : INotifyPropertyChanged
         var a =App.Container.Resolve<MainWindow>();
         var reply = await CryptoClient.Register(UserName, passwordBox.Password);
         
-        if (reply.StatusCode != StatusCode.Accepted)
+        if (reply.StatusCode != (int)StatusCode.OK)
         {
-            bool? messageBox;
-            switch (reply.StatusCode)
+            var messageBox = reply.StatusCode switch
             {
-                case StatusCode.NotAccepted:
-                    messageBox = new MessageBoxCustom("Something with server, try later", MessageType.Error, MessageButtons.Ok)
-                        .ShowDialog();
-                    break;
-                case StatusCode.WrongLogin:
-                    messageBox = new MessageBoxCustom("This username is defined try another", MessageType.Error, MessageButtons.Ok)
-                        .ShowDialog();
-                    break;
-            }
-                
+                (int)StatusCode.Aborted => new MessageBoxCustom("Something with server, try later", MessageType.Error,
+                    MessageButtons.Ok).ShowDialog(),
+                (int)StatusCode.Unauthenticated => new MessageBoxCustom("This username is defined try another", MessageType.Error,
+                    MessageButtons.Ok).ShowDialog(),
+                _ => throw new NotImplementedException()
+            };
+
             return;
         }
 
         var chat = App.Container.Resolve<ChatViewModel>();
         chat.User = new ContactModel
         {
-            Username = reply.User.Name,
-            Password = reply.User.Password,
+            Username = reply.User.Username,
             ImageSource = reply.User.ImageSource,
             Id = (int)reply.User.Id,
             Color = reply.User.Color,
@@ -71,16 +69,15 @@ public sealed class RegistrationViewModel : INotifyPropertyChanged
         var a =App.Container.Resolve<MainWindow>();
         var reply = await CryptoClient.AuthAsync(UserName, passwordBox.Password);
         
-        if (reply.StatusCode != StatusCode.Accepted)
+        if (reply.StatusCode != (int)StatusCode.OK)
         {
-                
+                // ignored
         }
 
         var chat = App.Container.Resolve<ChatViewModel>();
         chat.User = new ContactModel
         {
-            Username = reply.User.Name,
-            Password = reply.User.Password,
+            Username = reply.User.Username,
             ImageSource = reply.User.ImageSource,
             Id = (int)reply.User.Id,
             Color = reply.User.Color,

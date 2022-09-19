@@ -2,9 +2,9 @@
 
 namespace CryptographyLib.KeyExpanders;
 
-public class DESExpander : BaseExpander
+public class DesExpander : BaseExpander
 {
-    public DESExpander(byte[] originalKey, IPadding padding = null) 
+    public DesExpander(byte[] originalKey, IPadding padding = null!) 
         : base(originalKey, padding)
     {
         RoundsCount = 16;

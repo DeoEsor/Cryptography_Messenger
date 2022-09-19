@@ -1,15 +1,14 @@
 ﻿using CryptographyLib.KeyExpanders;
 
-namespace CryptographyLib.Interfaces
-{
+namespace CryptographyLib.Interfaces;
+
+/// <summary>
+/// Interface of Symmetric Encryptor
+/// </summary>
+public interface ISymmetricEncryptor : IEncryptor, IDecryptor
+{	
 	/// <summary>
-	/// Interface of Symmetric Encryptor
+	/// Rule of getting round keys
 	/// </summary>
-	public interface ISymmetricEncryptor : IEncryptor, IDecryptor
-	{	
-		/// <summary>
-		/// Rule of getting round keys
-		/// </summary>
-		IExpandKey ExpandKey { get; }
-	}
+	IExpandKey ExpandKey { get; }
 }

@@ -2,48 +2,53 @@
 using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 using CryptographyLib.KeyGenerators;
+using NumberTheory.Extensions;
 
-namespace CryptographyLib.Symmetric.RSA;
+namespace CryptographyLib.Asymmetric.RSA;
 
 public class RSA : IAsymmetricEncryptor
 {
     public AsymmetricKeyGenerator Generator { get; set; }
     public IExpandKey ExpandKey { get; set; }
 
-    public RSA(IExpandKey expandKey, RSAKeyGenerator generator = null!)
+    public RSA(IExpandKey expandKey, RSAKeyGenerator? generator = null!)
     {
         ExpandKey = expandKey;
-        Generator = generator ?? new RSAKeyGenerator(65537);
+        
+        Generator = generator 
+                    ?? new RSAKeyGenerator(65537);
     }
     
     public byte[] Encrypt(byte[] value)
     {
         var text = new BigInteger(value);
-        var e = Generator
-            .CreatePublicKey()
-            .Take(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
-        var n = Generator
-            .CreatePublicKey()
-            .TakeLast(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
+        var key = Generator.GenerateKeys();
+        var nums = key.PublicKey
+            .DeserializeBigInts();
 
-        return BigInteger.ModPow(text,new BigInteger(e), new BigInteger(n)).ToByteArray();
+        var e = nums[0];
+        
+        var n = nums[1];
+
+        return BigInteger
+            .ModPow(text,e,n)
+            .ToByteArray();
     }
 
     public byte[] Decrypt(byte[] value)
     {
         var text = new BigInteger(value);
-        var d = Generator
-            .CreatePrivateKey()
-            .Take(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
-        var n = Generator
-            .CreatePrivateKey()
-            .TakeLast(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
+        var key = Generator.GenerateKeys();
+        var nums = key.PrivateKey
+            .DeserializeBigInts();
 
-        return BigInteger.ModPow(text,new BigInteger(d), new BigInteger(n)).ToByteArray();
+        var d = nums[0];
+        
+        var n = nums[1];
+
+        return BigInteger
+            .ModPow(text,d,n)
+            .ToByteArray();
     }
 
 }

@@ -19,6 +19,13 @@
     <ItemGroup>
         <Protobuf Include="../Protos/API.proto" GrpcServices="Server" ProtoRoot="../Protos/" />
         <Protobuf Include="../Protos/Messages/*.proto" GrpcServices="Both" ProtoRoot="../Protos/" />
+        <Protobuf Update="..\Protos\Messages\UserMessage.proto">
+          <Link>Protos\Messages\UserMessage.proto</Link>
+        </Protobuf>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Crypto.Infrastructure\Crypto.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

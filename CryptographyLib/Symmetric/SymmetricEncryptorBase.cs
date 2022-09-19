@@ -1,34 +1,36 @@
-﻿using CryptographyLib.Interfaces;
+﻿using CryptographyLib.Data;
+using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 
-namespace CryptographyLib.Symmetric.FeistelNetwork
+namespace CryptographyLib.Symmetric;
+
+public abstract class SymmetricEncryptorBase : ISymmetricEncryptor
 {
-	public abstract class SymmetricEncryptorBase : ISymmetricEncryptor
+	private IExpandKey _expandKey;
+	
+	protected Key Key { get; set; }
+		
+	protected SymmetricEncryptorBase(IExpandKey expandKey)
 	{
-		private IExpandKey _expandKey;
+		_expandKey = expandKey;
+	}
 		
-		protected SymmetricEncryptorBase(IExpandKey expandKey)
-		{
-			_expandKey = expandKey;
-		}
-		
-		public IExpandKey ExpandKey
-		{
-			get => _expandKey;
-		}
+	public IExpandKey ExpandKey
+	{
+		get => _expandKey;
+	}
 
-		public abstract byte[] Encrypt(byte[] value);
+	public abstract byte[] Encrypt(byte[] value);
 
-		public abstract byte[] Decrypt(byte[] value);
+	public abstract byte[] Decrypt(byte[] value);
 
-		protected virtual byte[] EncryptRound(byte[] value)
-		{
-			throw new NotImplementedException();
-		}
+	protected virtual byte[] EncryptRound(byte[] value)
+	{
+		throw new NotImplementedException();
+	}
 
-		protected virtual byte[] DecryptRound(byte[] value)
-		{
-			throw new NotImplementedException();
-		}
+	protected virtual byte[] DecryptRound(byte[] value)
+	{
+		throw new NotImplementedException();
 	}
 }

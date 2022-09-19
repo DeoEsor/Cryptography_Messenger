@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace CryptographyLib.Interfaces;
+﻿namespace CryptographyLib.Interfaces;
 
 public interface IKeyGenerator<T>
 {

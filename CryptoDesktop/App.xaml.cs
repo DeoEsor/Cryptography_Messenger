@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using CryptoDesktop.gRPC;
 using CryptoDesktop.MVVM.ViewModel;
 using DryIoc;
 

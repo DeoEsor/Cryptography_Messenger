@@ -10,7 +10,7 @@ public class FuncKeyGenerator<T> : IKeyGenerator<T>
     {
         Func = func;
     }
-    
+     
     public byte[] Generate(T[] values)
     => values
                 .Select(value => Func?.Invoke(value))

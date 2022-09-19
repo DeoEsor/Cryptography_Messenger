@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using CryptoDesktop.Annotations;
+using CryptoDesktop.gRPC;
 using CryptoDesktop.MVVM.Commands;
 using CryptoDesktop.MVVM.Model;
 using DryIoc;
