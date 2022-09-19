@@ -10,7 +10,7 @@ public static partial class CipherMode
         if (values[0] is not int blocksCountCbc || values[1] is not ulong ivCbc)
             throw new ArgumentException("Failed to read params");
 
-        return new Cbc(encryptor, ivCbc, blocksCountCbc);
+        return new CBC(encryptor, ivCbc, blocksCountCbc);
     }
 
     private static CipherModeBase Ecb(ISymmetricEncryptor encryptor, object[] values)
