@@ -7,14 +7,16 @@ public sealed class Des : ISymmetricEncryptor
 {
 	public IExpandKey ExpandKey { get; }
 
-	private FeistelNetwork.FeistelNetwork _feistelNetwork;
-	private PBlock _pBlock = new PBlock();
+	private readonly FeistelNetwork.FeistelNetwork _feistelNetwork;
+	private PBlock _pBlock = new();
 
 	public Des(IExpandKey expandKey, ISymmetricEncryptor symmetricEncryptor = null!)
 	{
 		ExpandKey = expandKey;
-		_feistelNetwork = new FeistelNetwork.FeistelNetwork(expandKey, symmetricEncryptor);
-		_feistelNetwork.Rounds = 16;
+		_feistelNetwork = new FeistelNetwork.FeistelNetwork(expandKey, symmetricEncryptor)
+		{
+			Rounds = 16
+		};
 	}
 
 	public byte[] Encrypt(byte[] value)

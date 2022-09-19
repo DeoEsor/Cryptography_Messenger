@@ -21,7 +21,7 @@ internal class PKCS7 : IPadding
 			.Item2;
 		if (reqPadding == 0)
 			return input;
-		byte[] res = new byte[input.Length + reqPadding];
+		var res = new byte[input.Length + reqPadding];
 
 		for (var i = 0; i < input.Length; i++)
 			res[i] = input[i];

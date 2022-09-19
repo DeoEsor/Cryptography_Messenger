@@ -49,7 +49,7 @@ public class FeistelNetwork : SymmetricEncryptorBase
 			(l, r) = (r, l);
 		}
 		r = r.Xor(new BitArray(_encryptor.Encrypt(l.ToBytes())));
-		byte[] res = new byte[r.Length / 8 + 1];
+		var res = new byte[r.Length / 8 + 1];
 		r.CopyTo(res,0);
 		return res.ToArray();
 	}

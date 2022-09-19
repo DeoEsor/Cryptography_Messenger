@@ -38,7 +38,7 @@ public sealed class SymmetricEncryptorContext
 		writer.Write(Mode.Encrypt(input.ToArray()));
 	}
 		
-	public async Task AsyncDecryptFile(string pathFileInput, string  pathFileOutput)
+	public async Task AsyncDecryptFile(string pathFileInput, string pathFileOutput)
 	{
 		if (File.Exists(pathFileOutput)) 
 			File.Delete(pathFileOutput);

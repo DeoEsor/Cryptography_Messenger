@@ -1,5 +1,4 @@
-﻿using System.Dynamic;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace CryptographyLib.Data;
 
@@ -27,8 +26,10 @@ public sealed class Key
 	/// <returns></returns>
 	public static Key CreateAsymmetricKey(BigInteger[] publicKey, BigInteger[] privateKey)
 	{
-		var publicBytes = new List<byte>(BitConverter.GetBytes(publicKey.Length)); 
+		var publicBytes = new List<byte>(); 
 		var privateBytes = new List<byte>(BitConverter.GetBytes(privateKey.Length));
+		publicBytes.AddRange(BitConverter.GetBytes(publicKey.Length));
+		privateBytes.AddRange(BitConverter.GetBytes(privateKey.Length));
 
 		foreach (var value in publicKey)
 		{
@@ -68,20 +69,4 @@ public sealed class Key
 	public byte[] PrivateKey { get; } = null!;
 
 	public KeyTypeEnum KeyType { get; }
-
-	public static BigInteger[] GetBigInts(byte[] bytes)
-	{
-		var res = new BigInteger[BitConverter.ToInt32(bytes.AsSpan(0, 4))];
-		var startIndex = 4;
-
-		for (var i = 0; i < res.Length; i++)
-		{
-			var length = BitConverter.ToInt32(bytes.AsSpan(startIndex, 4));
-			var value = new BigInteger(bytes.AsSpan(startIndex + 4, length));
-			startIndex += 4 + length;
-			res[i] = value;
-		}
-		
-		return res;
-	}
 }

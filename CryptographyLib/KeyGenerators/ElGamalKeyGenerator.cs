@@ -1,14 +1,24 @@
-﻿using CryptographyLib.Interfaces;
+﻿using System.Numerics;
+using CryptographyLib.Data;
+using NumberTheory.Extensions;
+using NumberTheory.PrimalCheckers;
+using NumberTheory.RandomGenerators;
 
 namespace CryptographyLib.KeyGenerators;
 
 public class ElGamalKeyGenerator : AsymmetricKeyGenerator
 {
-	public ElGamalKeyGenerator(IKeyGenerator privateKeyGenerator, IKeyGenerator publicKeyGenerator) 
-		: base(privateKeyGenerator, publicKeyGenerator)
+	PrimalRandomGenerator RandomGenerator = new BruteForcePrimalRandomGenerator(new MillerRabinTest());
+	public override Key GenerateKeys()
 	{
+		var p = RandomGenerator.Generate();
+		var g = p.GetPrimalSqrt();
+		var x = RandomGenerator.Generate(1, p - 1);
+		var y = BigInteger.ModPow(g, x, p);
+		
+		return Key
+			.CreateAsymmetricKey(
+				new[] {y, g, p},
+				new[] {x});
 	}
-	
-	
-	
 }

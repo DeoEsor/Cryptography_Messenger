@@ -1,4 +1,5 @@
-﻿using CryptographyLib.Interfaces;
+﻿using CryptographyLib.Data;
+using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 
 namespace CryptographyLib.Symmetric;
@@ -6,6 +7,8 @@ namespace CryptographyLib.Symmetric;
 public abstract class SymmetricEncryptorBase : ISymmetricEncryptor
 {
 	private IExpandKey _expandKey;
+	
+	protected Key Key { get; set; }
 		
 	protected SymmetricEncryptorBase(IExpandKey expandKey)
 	{

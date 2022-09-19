@@ -2,6 +2,7 @@
 using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 using CryptographyLib.KeyGenerators;
+using NumberTheory.Extensions;
 
 namespace CryptographyLib.Asymmetric.RSA;
 
@@ -10,7 +11,7 @@ public class RSA : IAsymmetricEncryptor
     public AsymmetricKeyGenerator Generator { get; set; }
     public IExpandKey ExpandKey { get; set; }
 
-    public RSA(IExpandKey expandKey, RSAKeyGenerator generator = null!)
+    public RSA(IExpandKey expandKey, RSAKeyGenerator? generator = null!)
     {
         ExpandKey = expandKey;
         
@@ -21,38 +22,32 @@ public class RSA : IAsymmetricEncryptor
     public byte[] Encrypt(byte[] value)
     {
         var text = new BigInteger(value);
+        var key = Generator.GenerateKeys();
+        var nums = key.PublicKey
+            .DeserializeBigInts();
+
+        var e = nums[0];
         
-        var e = Generator
-            .CreatePublicKey()
-            .Take(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
-        
-        var n = Generator
-            .CreatePublicKey()
-            .TakeLast(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
+        var n = nums[1];
 
         return BigInteger
-            .ModPow(text,new BigInteger(e), new BigInteger(n))
+            .ModPow(text,e,n)
             .ToByteArray();
     }
 
     public byte[] Decrypt(byte[] value)
     {
         var text = new BigInteger(value);
+        var key = Generator.GenerateKeys();
+        var nums = key.PrivateKey
+            .DeserializeBigInts();
+
+        var d = nums[0];
         
-        var d = Generator
-            .CreatePrivateKey()
-            .Take(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
-        
-        var n = Generator
-            .CreatePrivateKey()
-            .TakeLast(Generator.CreatePublicKey().Length / 2)
-            .ToArray();
+        var n = nums[1];
 
         return BigInteger
-            .ModPow(text,new BigInteger(d), new BigInteger(n))
+            .ModPow(text,d,n)
             .ToByteArray();
     }
 
