@@ -60,10 +60,10 @@ public static partial class ArithmeticExtensions
 			bit = (dividend & 0x80000000) >> 31;
 			remainder = (remainder << 1) | bit;
 			t = remainder - divisor;
-			q = t >> 31 == 0 
-				? (uint)1 
-				: 0;
-			dividend <<= 1;
+
+      q = (t >> 31) == 0 ? (uint)1 : 0;
+			dividend = dividend << 1;
+
 			quotient = (quotient << 1) | q;
 			if ((q & 0b1) == 1) 
 				remainder = t;

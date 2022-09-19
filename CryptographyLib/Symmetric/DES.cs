@@ -1,31 +1,34 @@
-﻿using System.Collections;
-using CryptographyLib.Interfaces;
+﻿using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
+using CryptographyLib.Symmetric.FeistelNetwork;
 
-namespace CryptographyLib.Symmetric.FeistelNetwork;
-public sealed class DES : ISymmetricEncryptor
+namespace CryptographyLib.Symmetric;
+public sealed class Des : ISymmetricEncryptor
 {
 	public IExpandKey ExpandKey { get; }
 
-	private FeistelNetwork _feistelNetwork;
-	private PBlock _pBlock = new PBlock();
+	private readonly FeistelNetwork.FeistelNetwork _feistelNetwork;
+	private PBlock _pBlock = new();
 
-	public DES(IExpandKey expandKey, ISymmetricEncryptor symmetricEncryptor = null!)
+	public Des(IExpandKey expandKey, ISymmetricEncryptor symmetricEncryptor = null!)
 	{
-		_feistelNetwork = new FeistelNetwork(expandKey, symmetricEncryptor);
-		_feistelNetwork.Rounds = 16;
+		ExpandKey = expandKey;
+		_feistelNetwork = new FeistelNetwork.FeistelNetwork(expandKey, symmetricEncryptor)
+		{
+			Rounds = 16
+		};
 	}
 
 	public byte[] Encrypt(byte[] value)
 	{
-		var startPermuted = _pBlock.Encrypt(value, IP);
+		var startPermuted = _pBlock.Encrypt(value, Ip);
 		var temp =_feistelNetwork.Encrypt(startPermuted);
 		return _pBlock.Encrypt(temp, P);
 	}
 
 	public byte[] Decrypt(byte[] value)
 	{ 
-		var startPermuted = _pBlock.Decrypt(value, IP);
+		var startPermuted = _pBlock.Decrypt(value, Ip);
 		var temp =_feistelNetwork.Decrypt(startPermuted);
 		return _pBlock.Decrypt(temp, P);
 	}
@@ -34,7 +37,7 @@ public sealed class DES : ISymmetricEncryptor
 	/// <summary>
 	/// Init PBlock
 	/// </summary>
-	internal static readonly byte[] IP = 
+	internal static readonly byte[] Ip = 
 	{
 		58, 50, 42, 34, 26, 18, 10, 2,
 		60, 52, 44, 36, 28, 20, 12, 4,

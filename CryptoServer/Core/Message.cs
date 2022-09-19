@@ -11,7 +11,7 @@ public class Message
     }
     [Key]
     public int Id { get; set; }
-    public int Author { get; set; }
+    public int AuthorId { get; set; }
     public int ChatId { get; set; }
     
     public Files? File { get; set; }

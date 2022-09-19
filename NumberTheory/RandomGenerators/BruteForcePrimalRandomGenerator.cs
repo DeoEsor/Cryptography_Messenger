@@ -8,12 +8,16 @@ public class BruteForcePrimalRandomGenerator : PrimalRandomGenerator
         : base(primalChecker)
     {}
 
-    public override BigInteger Generate()
+    public override BigInteger Generate(BigInteger min, BigInteger max)
     {
-        var value = BigInteger.Pow(TestContext.CurrentContext.Random.NextULong(), 2);;
-        
-        while (!PrimalChecker.Check(value, 0.95f))
-            value = BigInteger.Pow(TestContext.CurrentContext.Random.NextULong(), 2);
+        var buffer = max.ToByteArray();
+        var value = min + 1;
+
+        while (!PrimalChecker.Check(value, 0.95f) && value < max)
+        {
+            TestContext.CurrentContext.Random.NextBytes(buffer);
+            value = new BigInteger(buffer);
+        }
 
         return value;
     }

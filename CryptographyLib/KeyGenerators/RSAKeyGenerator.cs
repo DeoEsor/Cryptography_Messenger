@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Numerics;
+using CryptographyLib.Data;
 using CryptographyLib.Extensions;
 using CryptographyLib.Interfaces;
 using NumberTheory.Euclid;
@@ -15,6 +16,7 @@ public sealed class RSAKeyGenerator : AsymmetricKeyGenerator
 
 
     private Lazy<((BigInteger, BigInteger), (BigInteger, BigInteger))> GeneratedPair;
+    
     public BigInteger E
     {
         get => _e;
@@ -26,28 +28,43 @@ public sealed class RSAKeyGenerator : AsymmetricKeyGenerator
     }
 
     private PrimalRandomGenerator Generator { get; set; } 
+    
     public RSAKeyGenerator(BigInteger e,PrimalRandomGenerator generator = null!, 
         IKeyGenerator privateKeyGenerator = default!, 
         IKeyGenerator publicKeyGenerator = default!)
-        : base(privateKeyGenerator, publicKeyGenerator)
     {
         E = e;
         Generator = generator ?? new BruteForcePrimalRandomGenerator(new MillerRabinTest());
     }
 
-    public override byte[] CreatePrivateKey(params object[] value)
-        =>
-            new BitArray(GeneratedPair.Value.Item2.Item1.ToByteArray())
-                .Concat(new BitArray(GeneratedPair.Value.Item2.Item2.ToByteArray()))
-                .ToBytes();
+    public override Key GenerateKeys() => Key.CreateAsymmetricKey(CreatePrivateKey(), CreatePrivateKey());
 
-    public override byte[] CreatePublicKey(params object[] value)
-        =>
-            new BitArray(GeneratedPair.Value.Item1.Item1.ToByteArray())
-                .Concat(new BitArray(GeneratedPair.Value.Item1.Item2.ToByteArray()))
-                .ToBytes();
+    private byte[] CreatePrivateKey(params object[] value)
+    {
+        var res = new List<byte>();
+        var p = GeneratedPair.Value.Item2.Item1.ToByteArray();
+        var q = GeneratedPair.Value.Item2.Item2.ToByteArray();
+        res.AddRange(BitConverter.GetBytes(p.Length));
+        res.AddRange(p);
+        res.AddRange(BitConverter.GetBytes(q.Length));
+        res.AddRange(q);
+        return res.ToArray();
+    }
 
-    ((BigInteger, BigInteger), (BigInteger, BigInteger)) Init()
+
+    private byte[] CreatePublicKey(params object[] value)
+    {
+        var res = new List<byte>();
+        var p = GeneratedPair.Value.Item1.Item1.ToByteArray();
+        var q = GeneratedPair.Value.Item1.Item2.ToByteArray();
+        res.AddRange(BitConverter.GetBytes(p.Length));
+        res.AddRange(p);
+        res.AddRange(BitConverter.GetBytes(q.Length));
+        res.AddRange(q);
+        return res.ToArray();
+    }
+
+    private ((BigInteger, BigInteger), (BigInteger, BigInteger)) Init()
     {
         Random random = new Random();
         var p = Generator.Generate();

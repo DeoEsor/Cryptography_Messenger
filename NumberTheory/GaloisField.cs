@@ -1,4 +1,4 @@
-﻿// ReSharper disable NonReadonlyMemberInGetHashCode
+// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace NumberTheory;
 
 /// <summary>
@@ -24,8 +24,6 @@ public sealed class GaloisField
 
     public GaloisField(byte value) => Value = value;
 
-    //generates Exp & Log table for ast multiplication operator
-
     //operators
     public static explicit operator GaloisField(byte b)
     {
@@ -45,6 +43,7 @@ public sealed class GaloisField
 
         if (a.Value == 0 || b.Value == 0) return result;
             
+
         var bres = (byte)((Log?[a.Value] + Log?[b.Value]) % (a.Module-1))!;
         bres = (byte)Exp?[bres]!;
         result.Value = bres;

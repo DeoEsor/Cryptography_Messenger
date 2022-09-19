@@ -1,7 +1,7 @@
 namespace NumberTheory.Extensions.Arithmetic;
+
 public static partial class ArithmeticExtensions
-{ 
-	static string? _a = string.Empty;
+{
 	/// <summary>
 	/// Binary exponentiation
 	/// </summary>
