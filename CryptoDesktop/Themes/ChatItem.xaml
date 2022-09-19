@@ -4,7 +4,7 @@
         <ResourceDictionary.MergedDictionaries>
             <ResourceDictionary Source="/CryptoDesktop;component/Themes/ButtonStyle.xaml"/>
         </ResourceDictionary.MergedDictionaries>
-        <StaticResource ResourceKey="RoundButtonDownload"/>
+        <StaticResource x:Key="roundButtonDownload" ResourceKey="RoundButtonDownload"/>
     </ResourceDictionary>
         
     <Style TargetType="Button">

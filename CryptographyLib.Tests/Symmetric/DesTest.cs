@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Text;
-using CryptographyLib.CipherModes;
+using CryptographyLib;
 using CryptographyLib.KeyExpanders;
-using CryptographyLib.Paddings;
 using CryptographyLib.Symmetric;
 using NUnit.Framework;
+using CipherMode = CryptographyLib.CipherModes.CipherMode;
 
 namespace CryptographyLib.Tests.Symmetric;
 
@@ -20,9 +20,11 @@ public class DesTest
         var key = new byte[7];
         
         TestContext.CurrentContext.Random.NextBytes(key);
-        var expander = new DESExpander(key,new PKCS7());
+        var expander = new DesExpander(key, Padding.CreateInstance(Padding.PaddingMode.PKCS7));
         var context = new SymmetricEncryptorContext(CipherMode.Mode.ECB,
-            (ushort)random.Next(), new DES(expander), 16);
+            (ushort)random.Next(), 
+            new Des(expander),
+            16);
         Debug.Write(Encoding.UTF8.GetString(key));
 
         await context.AsyncEncryptFile("Test.txt", "Encoded.txt");

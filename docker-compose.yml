@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: CryptoServer
+      dockerfile: Dockerfile
+    environment:
+      MONGO_USERNAME: root
+      MONGO_PASSWORD: rootpassword
+      MONGODB_CONNECTION_STRING: mongodb+srv://username:password@clusterURL
+      MSSQL_CONNECTION_STRING: mongodb+srv://username:password@clusterURL
+    ports:
+      - "8000:80"
+    depends_on:
+      - sqldb
+      - mongodb
+
+  sqldb:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    ports:
+        - "1433:1433"
+
+  mongodb:
+    image: "mongo:latest"
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - "27017:27017"
+    volumes:
+        - mongodb_data_container:/data/db
+
+volumes:
+    mongodb_data_container:

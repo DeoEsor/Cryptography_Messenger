@@ -1,4 +1,4 @@
-﻿// ReSharper disable NonReadonlyMemberInGetHashCode
+// ReSharper disable NonReadonlyMemberInGetHashCode
 namespace NumberTheory;
 
 /// <summary>
@@ -14,35 +14,15 @@ public sealed class GaloisField
     //generator to be used in Exp & Log table generation
     private const byte Generator = 0x2;
 
-    private static readonly byte[] Exp;
+    private static readonly byte[]? Exp;
 
-    private static readonly byte[] Log;
+    private static readonly byte[]? Log;
 
     private byte Value { get; set; }
 
     public GaloisField() => Value = 0;
 
     public GaloisField(byte value) => Value = value;
-
-    //generates Exp & Log table for ast multiplication operator
-    static GaloisField()
-    {
-        /*
-         *  Exp = new byte[Module];
-         Log = new byte[Module];
-
-         byte val = 0x01;
-         
-         for(var i=0; i<Module; i++)
-         {
-             Exp[i] = val;
-             if (i < Module - 1)
-                 Log[val] = (byte)i;
-             
-             val = Multiply(Generator,val);
-         }
-         */
-    }
 
     //operators
     public static explicit operator GaloisField(byte b)
@@ -63,8 +43,9 @@ public sealed class GaloisField
 
         if (a.Value == 0 || b.Value == 0) return result;
             
-        var bres = (byte)((Log[a.Value] + Log[b.Value]) % (a.Module-1));
-        bres = Exp[bres];
+
+        var bres = (byte)((Log?[a.Value] + Log?[b.Value]) % (a.Module-1))!;
+        bres = (byte)Exp?[bres]!;
         result.Value = bres;
         return result;
     }
@@ -126,7 +107,8 @@ public sealed class GaloisField
         }
     }
         
-    public byte Remnant(ushort poly, ushort module) {
+    public byte Remnant(ushort poly, ushort module)
+    {
         var module_count = Degree(module);
         var dif = 0;
 
@@ -136,7 +118,8 @@ public sealed class GaloisField
         return (byte)poly;
     }
         
-    private int Degree(ushort poly){
+    private int Degree(ushort poly)
+    {
         var res=0;
 
         for (; poly > 0; poly >>= 0b1)  
@@ -175,5 +158,36 @@ public sealed class GaloisField
             bb >>= 1;
         }
         return result;
+    }
+    
+    public static byte MultGf256(byte a, byte b, byte f)
+    {
+        byte t = 0, mask = 1;
+
+        for (var i = 0; i < 8; i++)
+        {
+            if ((b & mask) != 0)
+                t = (byte)(t ^ a);
+            if ((a & 128) == 128)
+                a = (byte)(a << 1);
+            else
+                a = (byte)((a << 1) ^ f);
+            mask = (byte)(mask << 1);
+        }
+        return t;
+    }
+
+    public static byte PowerGf256(byte a, byte b, byte f)
+    {
+        byte t = 1;
+
+        while (b > 0)
+        {
+            if (b % 2 == 1)
+                t = MultGf256(a, b,f);
+            a = MultGf256(a, a,f);
+            b = (byte)(b >> 1);
+        }
+        return t;
     }
 }

@@ -8,5 +8,5 @@ public class Chat
     public int Id { get; set; }
     public int ChatId { get; set; }
     public int UserId { get; set; }
-    public byte[] SecretKey { get; set; }
+    public byte[] KeyData { get; set; }
 }

@@ -1,6 +1,6 @@
 //using CryptoServer.Services;
 
-using CryptoServer.Interfaces;
+using CryptoServer.Core;
 using CryptoServer.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,4 +12,6 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<ChattingService>();
+app.MapGrpcService<AuthService>();
+app.MapGrpcService<UsersService>();
 app.Run();
