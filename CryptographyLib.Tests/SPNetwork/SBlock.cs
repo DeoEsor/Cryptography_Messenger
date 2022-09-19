@@ -3,7 +3,7 @@ using CryptographyLib.Extensions;
 using CryptographyLib.Symmetric.FeistelNetwork;
 using NUnit.Framework;
 
-namespace CryptoTest.SPNetwork;
+namespace CryptographyLib.Tests.SPNetwork;
 
 [TestFixture]
 public class SBlockTest

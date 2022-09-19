@@ -2,7 +2,7 @@
 using CryptographyLib.Symmetric.FeistelNetwork;
 using NUnit.Framework;
 
-namespace CryptoTest.SPNetwork;
+namespace CryptographyLib.Tests.SPNetwork;
 
 [TestFixture]
 public class PBlockTest
