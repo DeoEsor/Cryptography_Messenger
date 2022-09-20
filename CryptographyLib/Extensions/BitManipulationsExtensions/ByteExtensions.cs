@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
-namespace CryptographyLib.Extensions;
+namespace CryptographyLib.Extensions.BitManipulationsExtensions;
 
 public static class ByteExtensions
 {

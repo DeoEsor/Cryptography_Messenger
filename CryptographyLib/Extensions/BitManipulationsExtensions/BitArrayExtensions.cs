@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace CryptographyLib.Extensions;
+namespace CryptographyLib.Extensions.BitManipulationsExtensions;
 
 public static class BitArrayExtensions
 {
