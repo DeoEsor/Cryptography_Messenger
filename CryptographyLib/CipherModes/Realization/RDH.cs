@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Security.Authentication;
-using CryptographyLib.Extensions;
+using CryptographyLib.Extensions.BitManipulationsExtensions;
 using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 using NUnit.Framework;

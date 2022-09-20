@@ -2,6 +2,7 @@
 
 using System.Collections;
 using CryptographyLib.Extensions;
+using CryptographyLib.Extensions.BitManipulationsExtensions;
 
 namespace CryptographyLib.Symmetric.FeistelNetwork;
 

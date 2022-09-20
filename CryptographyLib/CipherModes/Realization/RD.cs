@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using CryptographyLib.Extensions;
+using CryptographyLib.Extensions.BitManipulationsExtensions;
 using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 using NUnit.Framework;
