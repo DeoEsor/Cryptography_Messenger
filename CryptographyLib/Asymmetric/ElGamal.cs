@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using CryptographyLib.Data;
+using CryptographyLib.Extensions.CiphersExtensions.KeyExtensions;
 using CryptographyLib.Interfaces;
 using CryptographyLib.KeyExpanders;
 using CryptographyLib.KeyGenerators;
@@ -22,19 +23,28 @@ public class ElGamal : IAsymmetricEncryptor
 	
 	public byte[] Encrypt(byte[] value)
 	{
-		var nums = Key
-			.PublicKey
-			.DeserializeBigInts();
+		var keyResult = Key.ParseElGamalKey();
+		if (!keyResult.IsSuccessful)
+		{
+			// TODO
+			// ignored
+		}
+
+		var elgamalKey = keyResult.Value;
+		var p = elgamalKey.P;
+		var g = elgamalKey.G;
+		var y = elgamalKey.Y;
 		
-		BigInteger y = nums[0], g = nums[1], p = nums[2]; 
 		var m = new BigInteger(value);
 
+		
 		var k = Random.Generate(1, p - 1);
 
-		while (BigInteger.GreatestCommonDivisor(k, p-1) != 1)
+		while (BigInteger.GreatestCommonDivisor(k, p - 1) != 1)
 			k = Random.Generate(1, p - 1);
-
+		
 		var a = BigInteger.ModPow(g , k , p);
+		
 		var b = y.Pow(k) * m % p;
 
 		return new[] { a, b }
@@ -43,15 +53,17 @@ public class ElGamal : IAsymmetricEncryptor
 
 	public byte[] Decrypt(byte[] value)
 	{
-		var nums = value
-			.DeserializeBigInts();
-		
-		var p = Key.PublicKey
-			.DeserializeBigInts()
-			[2];
-		var x = Key.PrivateKey
-			.DeserializeBigInts()
-			[0];
+		var nums = value.DeserializeBigInts();
+		var keyResult = Key.ParseElGamalKey();
+		if (!keyResult.IsSuccessful)
+		{
+			// TODO
+			// ignored
+		}
+
+		var elgamalKey = keyResult.Value;
+		var p = elgamalKey.P;
+		var x = elgamalKey.X;
 		
 		BigInteger a = nums[0], b = nums[1];
 

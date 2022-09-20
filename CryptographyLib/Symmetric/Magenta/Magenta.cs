@@ -1,5 +1,4 @@
 ﻿using CryptographyLib.KeyExpanders;
-using NumberTheory;
 
 namespace CryptographyLib.Symmetric;
 
