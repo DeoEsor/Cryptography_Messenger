@@ -2,6 +2,9 @@
 
 public interface ICryptoHashFunction
 {
-    public int BlockSize { get;  }
-    public byte[] CreateHash();
+    
+    /// <summary>
+    /// Method that receiving the message and returns hash of the message
+    /// </summary>
+    public byte[] CreateHash(byte[] mes);
 }
