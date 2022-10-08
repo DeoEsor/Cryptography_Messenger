@@ -2,62 +2,62 @@
 
 public static class BitCyclicRotates
 {
-    public static int ShiftRotateLeft(this int value, int bits)
+    public static int ShiftRotateLeft(this int value, int shift = 1)
     {
-        if (bits == 0) return value;
+        if (shift == 0) return value;
     
         var right = value >> 1;
         
-        if ((32 - bits) <= 1) 
-            return value << bits | right;
+        if (32 - shift <= 1) 
+            return value << shift | right;
         
         right &= 0x7FFFFFFF;
-        right >>= 32 - bits - 1;
+        right >>= 32 - shift - 1;
         
-        return value << bits | right;
+        return value << shift | right;
     }
     
-    public static uint ShiftRotateLeft(this uint value, int bits)
+    public static uint ShiftRotateLeft(this uint value, int shift = 1)
     {
-        if (bits == 0) return value;
+        if (shift == 0) return value;
     
         var right = value >> 1;
         
-        if ((32 - bits) <= 1) 
-            return value << bits | right;
+        if (32 - shift <= 1) 
+            return value << shift | right;
         
         right &= 0x7FFFFFFF;
-        right >>= 32 - bits - 1;
+        right >>= 32 - shift - 1;
         
-        return value << bits | right;
+        return value << shift | right;
     }
 
-    public static int ShiftRotateRight(this int value, int bits)
+    public static int ShiftRotateRight(this int value, int shift = 1)
     {
-        if (bits == 0) return value;
+        if (shift == 0) return value;
         var v = (uint)value;
         var right = v >> 1;
         
-        if (bits <= 1)
-            return (int)((v << (32 - bits)) | right);
+        if (shift <= 1)
+            return (int)((v << (32 - shift)) | right);
         
         right &= 0x7FFFFFFF;
-        right >>= bits - 1;
+        right >>= shift - 1;
         
-        return (int)((v << (32 - bits)) | right);
+        return (int)((v << (32 - shift)) | right);
     }
     
-    public static uint ShiftRotateRight(this uint value, int bits)
+    public static uint ShiftRotateRight(this uint value, int shift  = 1)
     {
-        if (bits == 0) return value;
+        if (shift == 0) return value;
         var right = value >> 1;
         
-        if (bits <= 1)
-            return (value << (32 - bits)) | right;
+        if (shift <= 1)
+            return (value << (32 - shift)) | right;
         
         right &= 0x7FFFFFFF;
-        right >>= bits - 1;
+        right >>= shift - 1;
         
-        return (value << (32 - bits)) | right;
+        return (value << (32 - shift)) | right;
     }
 }
