@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <DocumentationMarkdown>$(MSBuildProjectDirectory)\API.md</DocumentationMarkdown>
         <LangVersion>preview</LangVersion>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     
     <!--
