@@ -14,7 +14,7 @@
         <Private>true</Private>
         <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       </ProjectReference>
-      <ProjectReference Include="..\СryptoClient\СryptoClient.csproj" />
+      <ProjectReference Include="..\CryptoDesktop.gRPC\CryptoDesktop.gRPC.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -11,5 +11,8 @@ public abstract class PrimalRandomGenerator : IRandomGenerator
         PrimalChecker = primalChecker;
     }
 
-    public abstract BigInteger Generate();
+    public abstract BigInteger Generate(BigInteger min, BigInteger max);
+
+
+    public BigInteger Generate() => Generate(BigInteger.MinusOne, BigInteger.MinusOne);
 }

@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Windows.Input;
 using CryptoDesktop.Annotations;
+using CryptoDesktop.gRPC;
 using CryptoDesktop.MVVM.Commands;
 using CryptoDesktop.MVVM.Model;
 using DryIoc;
 using Microsoft.Win32;
-using СryptoClient;
 
 namespace CryptoDesktop.MVVM.ViewModel;
 
@@ -25,7 +23,7 @@ public class ChatViewModel : INotifyPropertyChanged
     public RelayCommand SendCommand { get; set; }
     public RelayCommand OpenFileCommand { get; set; }
     public RelayCommand ChoiceParamsCommand { get; set; }
-    public CryptoClient CryptoClient { get; set; }
+    public AuthClient CryptoClient { get; set; }
 
     public ContactModel SelectedContact
     {
@@ -59,7 +57,7 @@ public class ChatViewModel : INotifyPropertyChanged
 
     public ChatViewModel()
     {
-        CryptoClient = App.Container.Resolve<CryptoClient>();
+        CryptoClient = App.Container.Resolve<AuthClient>();
 
         Contacts.Add(new ContactModel
         {

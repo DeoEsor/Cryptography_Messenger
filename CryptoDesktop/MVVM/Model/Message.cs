@@ -2,7 +2,6 @@
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Input;
 using CryptoDesktop.MVVM.Commands;
 using Microsoft.Win32;

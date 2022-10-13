@@ -1,29 +1,30 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CryptoDesktop.Annotations;
+using CryptoDesktop.gRPC;
 using CryptoDesktop.MVVM.Commands;
 using CryptoDesktop.MVVM.Model;
 using CryptoDesktop.UserControls;
-using CryptoServices;
 using DryIoc;
-using СryptoClient;
+using Grpc.Core;
 
 namespace CryptoDesktop.MVVM.ViewModel;
 
 public sealed class RegistrationViewModel : INotifyPropertyChanged
 {
     public Window Owner { get; set; }
-    public CryptoClient CryptoClient { get; set; }
+    public AuthClient CryptoClient { get; set; }
     public ICommand LoginCommand { get; set; }
     public ICommand RegisterCommand { get; set; }
     public string UserName { get; set; } = "Username";
     public RegistrationViewModel(Window owner)
     {
         Owner = owner;
-        CryptoClient = App.Container.Resolve<CryptoClient>();
+        CryptoClient = App.Container.Resolve<AuthClient>();
         LoginCommand = new RelayCommand(Login);
         RegisterCommand = new RelayCommand(Register);
     }
@@ -34,29 +35,24 @@ public sealed class RegistrationViewModel : INotifyPropertyChanged
         var a =App.Container.Resolve<MainWindow>();
         var reply = await CryptoClient.Register(UserName, passwordBox.Password);
         
-        if (reply.StatusCode != StatusCode.Accepted)
+        if (reply.StatusCode != (int)StatusCode.OK)
         {
-            bool? messageBox;
-            switch (reply.StatusCode)
+            var messageBox = reply.StatusCode switch
             {
-                case StatusCode.NotAccepted:
-                    messageBox = new MessageBoxCustom("Something with server, try later", MessageType.Error, MessageButtons.Ok)
-                        .ShowDialog();
-                    break;
-                case StatusCode.WrongLogin:
-                    messageBox = new MessageBoxCustom("This username is defined try another", MessageType.Error, MessageButtons.Ok)
-                        .ShowDialog();
-                    break;
-            }
-                
+                (int)StatusCode.Aborted => new MessageBoxCustom("Something with server, try later", MessageType.Error,
+                    MessageButtons.Ok).ShowDialog(),
+                (int)StatusCode.Unauthenticated => new MessageBoxCustom("This username is defined try another", MessageType.Error,
+                    MessageButtons.Ok).ShowDialog(),
+                _ => throw new NotImplementedException()
+            };
+
             return;
         }
 
         var chat = App.Container.Resolve<ChatViewModel>();
         chat.User = new ContactModel
         {
-            Username = reply.User.Name,
-            Password = reply.User.Password,
+            Username = reply.User.Username,
             ImageSource = reply.User.ImageSource,
             Id = (int)reply.User.Id,
             Color = reply.User.Color,
@@ -73,16 +69,15 @@ public sealed class RegistrationViewModel : INotifyPropertyChanged
         var a =App.Container.Resolve<MainWindow>();
         var reply = await CryptoClient.AuthAsync(UserName, passwordBox.Password);
         
-        if (reply.StatusCode != StatusCode.Accepted)
+        if (reply.StatusCode != (int)StatusCode.OK)
         {
-                
+                // ignored
         }
 
         var chat = App.Container.Resolve<ChatViewModel>();
         chat.User = new ContactModel
         {
-            Username = reply.User.Name,
-            Password = reply.User.Password,
+            Username = reply.User.Username,
             ImageSource = reply.User.ImageSource,
             Id = (int)reply.User.Id,
             Color = reply.User.Color,

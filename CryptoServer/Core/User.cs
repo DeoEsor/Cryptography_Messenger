@@ -10,7 +10,7 @@ public class User
     public int Id { get; set; }
     
     public string Username { get; set; }
-    public string Password { get; set; } // I know that's bad thing, but bruh
+    public byte[] Password { get; set; }
 
     public bool IsOnline { get; set; }
     

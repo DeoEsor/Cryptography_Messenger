@@ -1,7 +1,6 @@
-﻿namespace CryptographyLib.Extensions
+﻿namespace CryptographyLib.Extensions;
+
+public static class FestielNetworkExtensions
 {
-	public static class FestielNetworkExtensions
-	{
 		
-	}
 }

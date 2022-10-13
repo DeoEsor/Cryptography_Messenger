@@ -1,18 +1,102 @@
 ﻿syntax = "proto3";
 
-import "Messages/OpenMessage.proto";
-import "Messages/SessionMessages.proto";
-import "Messages/UserGettingMessages.proto";
-
 option csharp_namespace = "CryptoServices";
         
 package CryptoServices;
 
-service CryptoService { // should be separated on different services
-    rpc Auth            (StartSessionRequest)   returns (StartSessionReply);
-    rpc Register         (StartSessionRequest)   returns (StartSessionReply);
-    rpc StartChatting   (StartChattingRequest)   returns (StartChattingReply); 
+service ChattingService 
+{
+    rpc StartChatting   (StartChattingRequest)  returns (StartChattingReply);
     rpc SendMessage     (stream OpenMessage)    returns (stream OpenMessage);
+}
+
+service AuthService
+{
+    rpc Auth            (StartSessionRequest)   returns (StartSessionReply);
+    rpc Register        (StartSessionRequest)   returns (StartSessionReply);
     rpc Quit            (FinishSessionRequest)  returns (FinishSessionReply);
-    rpc GetUsers        (UserGettingRequest)    returns (UserGettingReply);     
+}
+
+service UsersService
+{
+    rpc GetUsers        (UserGettingRequest)    returns (UserGettingReply);
+}
+
+message User 
+{
+    uint64 Id                   = 1;
+    string Username             = 2;
+    string Color                = 3;
+    optional string ImageSource = 4;
+}
+
+message UserGettingRequest 
+{
+    uint64 Username = 1;
+}
+
+message UserGettingReply 
+{
+    repeated User Users = 1;
+}
+
+message StartSessionRequest 
+{
+    string  Username = 1;
+    bytes   Password = 2;
+}
+
+message StartSessionReply 
+{
+    int32    Status_code            = 1;
+    optional string Comment         = 2;
+    optional User User              = 3;
+    optional OpenMessages Messages  = 4;
+}
+
+message StartChattingRequest 
+{
+    uint64  TargetId = 1;
+}
+
+message StartChattingReply 
+{
+    int32      Status_code      = 1;
+    optional uint64 IV          = 2;
+    optional bytes  Key         = 3;
+}
+
+message FinishSessionRequest 
+{
+    string  Username            = 1;
+    bytes   Password            = 2;
+}
+
+message FinishSessionReply 
+{
+    uint64 Id                   = 1;
+}
+
+message OpenMessage 
+{
+    User ReceiverId             = 1;
+    User Owner                  = 2;
+    bytes Message               = 3;
+    optional CodingMode Mode    = 4;
+}
+
+message OpenMessages 
+{
+    repeated OpenMessage Messages = 1;
+}
+
+enum CodingMode 
+{
+    ECB             = 0;
+    CBC             = 1;
+    CFB             = 2;
+    OFB             = 3;
+    CTR             = 4;
+    RD              = 5;
+    RD_H            = 6;
 }
