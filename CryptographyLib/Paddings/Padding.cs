@@ -1,12 +1,13 @@
 ﻿// ReSharper disable CheckNamespace
 
-using CryptographyLib.Paddings;
-namespace CryptographyLib;
+using CryptographyLib.Interfaces;
+namespace CryptographyLib.Paddings;
 
-public static class Padding
+/// <summary>
+/// Supplier for Paddings realizations
+/// </summary>
+public static partial class Padding
 {
-	public enum PaddingMode {PKCS7, ISO_10126 ,X923}
-
 	public static IPadding CreateInstance(PaddingMode mode)
 	{
 		return mode switch
