@@ -1,5 +1,5 @@
+using BenchmarkDotNet.Attributes;
 using CryptographyLib.Interfaces;
-using CryptographyLib.Paddings;
 using PaddingMode = CryptographyLib.Paddings.Padding.PaddingMode;
 
 namespace CryptographyLib.Tests.PaddingsTests;
@@ -16,7 +16,7 @@ public class X923
         Padding =  Paddings.Padding.CreateInstance(PaddingMode.X923);
     }
     
-    [Test]
+    [Test, Benchmark]
     public void PaddingTest()
     {
         Message = new byte[7];
@@ -27,7 +27,7 @@ public class X923
         Assert.That(Message.Length, Is.EqualTo(16));
     }
     
-    [Test]
+    [Test, Benchmark]
     public void DeletePaddingTest()
     {
         Message = new byte[7];

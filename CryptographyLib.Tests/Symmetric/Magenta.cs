@@ -1,4 +1,6 @@
-﻿namespace CryptographyLib.Tests.Symmetric;
+﻿using CryptographyLib.Expanders;
+
+namespace CryptographyLib.Tests.Symmetric;
 
 [TestFixture]
 public class Magenta
@@ -11,7 +13,7 @@ public class Magenta
         var key = new byte[7];
         
         TestContext.CurrentContext.Random.NextBytes(key);
-        var expander = new DesExpander(key, Padding.CreateInstance(Padding.PaddingMode.PKCS7));
+        var expander = new DesExpander(key, Paddings.Padding.CreateInstance(Paddings.Padding.PaddingMode.PKCS7));
         var context = new SymmetricEncryptorContext(CipherMode.Mode.ECB,
             (ushort)random.Next(), 
             new Des(expander),
