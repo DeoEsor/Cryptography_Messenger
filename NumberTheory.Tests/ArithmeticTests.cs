@@ -26,4 +26,26 @@ public class ArithmeticTests
     {
         Assert.That(IPrimalChecker.GetDegree(0.8f), Is.EqualTo(3));
     }
+
+    [Test]
+    public void RightRotate()
+    {
+        var value = 1;
+        Assert.Multiple(() =>
+        {
+            Assert.That(value.ShiftRotateRight(1), Is.EqualTo(int.MinValue));
+            Assert.That(8.ShiftRotateRight(2), Is.EqualTo(2));
+        });
+    }
+    
+    [Test]
+    public void LeftRotate()
+    {
+        var value = 1;
+        Assert.Multiple(() =>
+        {
+            Assert.That(value.ShiftRotateLeft(5), Is.EqualTo(32));
+            Assert.That(1.ShiftRotateLeft(32), Is.EqualTo(1));
+        });
+    }
 }
