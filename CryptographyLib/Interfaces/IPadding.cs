@@ -1,5 +1,8 @@
-﻿namespace CryptographyLib.Paddings;
+﻿namespace CryptographyLib.Interfaces;
 
+/// <summary>
+/// Interface for padding realizations
+/// </summary>
 public interface IPadding
 {
 	/// <summary>
