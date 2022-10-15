@@ -1,7 +1,5 @@
-﻿using System;
-using CryptographyLib.Extensions;
+﻿using CryptographyLib.Extensions;
 using CryptographyLib.Symmetric.FeistelNetwork;
-using NUnit.Framework;
 
 namespace CryptographyLib.Tests.SPNetwork;
 

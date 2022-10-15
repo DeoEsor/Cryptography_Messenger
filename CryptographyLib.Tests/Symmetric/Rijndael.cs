@@ -1,16 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Text;
-using CryptographyLib;
-using System.Threading.Tasks;
-using CryptographyLib.CipherModes;
-using CryptographyLib.KeyExpanders;
-using CryptographyLib.Paddings;
-using CryptographyLib.Symmetric;
-using CryptographyLib.Symmetric.AES;
-using NUnit.Framework;
-
-namespace CryptographyLib.Tests.Symmetric;
+﻿namespace CryptographyLib.Tests.Symmetric;
 
 [TestFixture]
 public class RijndaelTest
@@ -20,7 +8,7 @@ public class RijndaelTest
     {
         /*
         Random random = new Random();
-        //var generator = new FuncKeyGenerator<BigInteger>(new Func<BigInteger, byte[]>(s => s.ToByteArray()));
+        var generator = new FuncKeyGenerator<BigInteger>(s => s.ToByteArray());
 
         (ushort)random.Next(), new Rijndael(expander), 16);
         Debug.Write(Encoding.UTF8.GetString(key));
