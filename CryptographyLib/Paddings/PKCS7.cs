@@ -13,7 +13,7 @@ internal class PKCS7 : IPadding
 	/// <seealso cref="ru.wikipedia.org/wiki/Дополнение_(криптография)#PKCS7"/>
 	public byte[] ApplyPadding(byte[] input, int blockLength)
 	{
-		var reqPadding = input.Length % blockLength; 
+		var reqPadding = blockLength - input.Length; 
 		
 		if (reqPadding == 0)
 			return input;

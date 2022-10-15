@@ -12,7 +12,7 @@ internal class ISO_10126 : IPadding
 	{
 		var random = new Random();
 		
-		var reqPadding = input.Length % blockLength; 
+		var reqPadding = blockLength - input.Length; 
 		
 		if (reqPadding == 0)
 			return input;
