@@ -9,11 +9,11 @@ public sealed class Sha1 : ICryptoHashFunction
     public unsafe byte[] CreateHash(byte[] mes)
     {
         uint h0 = 0x67452301;
-        uint h1 = 0xEFCDAB89;
-        uint h2 = 0x98BADCFE;
+        var  h1 = 0xEFCDAB89;
+        var  h2 = 0x98BADCFE;
         uint h3 = 0x10325476;
-        uint h4 = 0xC3D2E1F0;
-        var w = stackalloc uint[80];
+        var  h4 = 0xC3D2E1F0;
+        var  w = stackalloc uint[80];
         
         //TODO add expander for SHA-1
 
@@ -24,11 +24,11 @@ public sealed class Sha1 : ICryptoHashFunction
                             .ShiftRotateLeft();
 
 
-            uint a = h0;
-            uint b = h1;
-            uint c = h2;
-            uint d  = h3;
-            uint e = h4;
+            var a = h0;
+            var b = h1;
+            var c = h2;
+            var d = h3;
+            var e = h4;
 
 
             for (var i = 0; i < 79; i++)
