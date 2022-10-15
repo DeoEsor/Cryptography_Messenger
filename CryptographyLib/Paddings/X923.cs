@@ -1,16 +1,18 @@
-﻿using NumberTheory.Extensions.Arithmetic;
+﻿using CryptographyLib.Interfaces;
+
 namespace CryptographyLib.Paddings;
 
 internal class X923 : IPadding
 {
+	/// <inheritdoc />
 	public byte[] ApplyPadding(byte[] input, int blockLength)
 	{
-		var reqPadding= ArithmeticExtensions.
-			unsigned_divide((uint)input.Length, (byte)blockLength)
-			.Item2;
+		var reqPadding = input.Length % blockLength; 
+		
 		if (reqPadding == 0)
 			return input;
-		byte[] res = new byte[input.Length + reqPadding];
+		
+		var res = new byte[input.Length + reqPadding];
 
 		for (var i = 0; i < input.Length; i++)
 			res[i] = input[i];
@@ -21,5 +23,15 @@ internal class X923 : IPadding
 		res[input.Length + reqPadding - 1] = (byte)reqPadding;
 			
 		return res;
+	}
+
+	/// <inheritdoc />
+	public byte[] DeletePadding(byte[] input)
+	{
+		var reqPadding = input[^1];
+		
+		Array.Resize(ref input, input.Length - reqPadding);
+
+		return input;
 	}
 }
