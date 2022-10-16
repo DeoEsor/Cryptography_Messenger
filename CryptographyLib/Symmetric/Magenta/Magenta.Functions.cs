@@ -6,10 +6,7 @@ public sealed unsafe partial class Magenta
 {
 	#region Magenta Functions
 
-	private static byte F(byte x)
-		=> x == 255
-			? (byte)0
-			: GaloisField.PowerGf256(0x02, x, 0x65);
+	private static byte F(byte x) => Sbox[x];
 
 	private static byte A(byte x, byte y) => F((byte)(x ^ F(y)));
 

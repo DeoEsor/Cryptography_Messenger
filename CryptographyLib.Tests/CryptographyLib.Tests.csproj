@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CryptographyLib\CryptographyLib.csproj" AdditionalProperties="Configuration=Release" />
+      <ProjectReference Include="..\CryptographyLib\CryptographyLib.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,6 +30,9 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="some_small_file.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Test.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

@@ -2,7 +2,7 @@
 
 public partial class Magenta
 {
-	byte[] Sbox = 
+	static byte[] Sbox = 
 	{
 		1,    2,    4,    8,   16,   32,   64,  128,
 		101,  202,  241,  135,  107,  214,  201,  247,

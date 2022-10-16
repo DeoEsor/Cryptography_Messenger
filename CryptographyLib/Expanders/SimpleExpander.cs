@@ -1,9 +1,4 @@
-﻿
-
-// ReSharper disable MemberCanBePrivate.Global
-
-using CryptographyLib.Interfaces;
-
+﻿// ReSharper disable MemberCanBePrivate.Global
 namespace CryptographyLib.Expanders;
 
 public class SimpleExpander : BaseExpander
@@ -22,14 +17,17 @@ public class SimpleExpander : BaseExpander
 	
 	public override IEnumerator<byte[]> GetExpander()
 	{
-		for (var i = 0; i < OriginalKey.Length / BlockLength; i++)
+		var count = OriginalKey.Length / BlockLength;
+
+		if (OriginalKey.Length % BlockLength != 0)
+			count++;
+		
+		for (var i = 0; i < count; i++)
 		{
-			if (OriginalKey
-				    .Skip(i * BlockLength)
-				    .Take(BlockLength)
-				    .ToArray() 
-			    is not { } current) 
-				yield break;
+			var current = OriginalKey
+				.Skip(i * BlockLength)
+				.Take(BlockLength)
+				.ToArray();
 			
 			if (current.Length < BlockLength)
 				current = Padding.ApplyPadding(current, BlockLength);

@@ -29,7 +29,7 @@ public class Magenta
     [Test]
     public async Task Crypt()
     {
-        await Context.AsyncEncryptFile("some_small_File.txt", "Encoded.txt");
+        await Context.AsyncEncryptFile("Test.txt", "Encoded.txt");
         await Context.AsyncDecryptFile("Encoded.txt", "Decoded.txt");
     }
 }

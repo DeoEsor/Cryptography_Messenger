@@ -13,9 +13,9 @@ public sealed class SymmetricEncryptorContext
 		
 	public SymmetricEncryptorContext(CipherMode.Mode mode, 
 		ushort seed, 
-		ISymmetricEncryptor symmetricEncryptor, params object[] parametrs)
+		ISymmetricEncryptor symmetricEncryptor, params object[] parameters)
 	{
-		Mode = CipherMode.CreateInstance(mode, symmetricEncryptor, parametrs);
+		Mode = CipherMode.CreateInstance(mode, symmetricEncryptor, parameters);
 		Seed = seed;
 	}
 
@@ -39,14 +39,22 @@ public sealed class SymmetricEncryptorContext
 		
 	public async Task AsyncDecryptFile(string pathFileInput, string pathFileOutput)
 	{
+		byte[] value;
 		if (File.Exists(pathFileOutput)) 
 			File.Delete(pathFileOutput);
-
-		byte[] value;
 
 		await using var writer = new BinaryWriter(File.Create(pathFileOutput));
 		using var reader = new BinaryReader(File.Open(pathFileInput, FileMode.Open));
 		while ((value = reader.ReadBytes(128)).Length != 0)
-			writer.Write(await DecryptAsync(value));
+			writer.Write(await EncryptAsync(value));
+	}
+
+	private async Task WriteBlock(StreamReader reader, StreamWriter writer, long from, long to)
+	{
+		/*
+		char[] value = new char[128];
+		reader.ReadAsync(value, from, 128);
+		writer.Write(await DecryptAsync(value.));
+		*/
 	}
 }

@@ -168,10 +168,9 @@ public sealed class GaloisField
         {
             if ((b & mask) != 0)
                 t = (byte)(t ^ a);
-            if ((a & 128) == 128)
-                a = (byte)(a << 1);
-            else
-                a = (byte)((a << 1) ^ f);
+
+            a = (a & 128) == 128 ? (byte)(a << 1) : (byte)((a << 1) ^ f);
+
             mask = (byte)(mask << 1);
         }
         return t;
@@ -184,8 +183,8 @@ public sealed class GaloisField
         while (b > 0)
         {
             if (b % 2 == 1)
-                t = MultGf256(a, b,f);
-            a = MultGf256(a, a,f);
+                t = MultGf256(a, b, f);
+            a = MultGf256(a, a, f);
             b = (byte)(b >> 1);
         }
         return t;

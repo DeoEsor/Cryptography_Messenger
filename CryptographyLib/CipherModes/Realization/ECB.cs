@@ -16,7 +16,7 @@ public class ECB : CipherModeBase
 		var expander = new SimpleExpander(value, BlockLength)
 			.ToArray();
 		
-		var result = new byte[value.Length];
+		var result = new byte[BlockLength * expander.Length];
 			
 		Parallel.For(0,expander.Length,
 			i => Encryptor.Encrypt(expander[i]).CopyTo(result, BlockLength * i));
