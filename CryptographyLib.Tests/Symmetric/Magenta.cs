@@ -1,26 +1,35 @@
-﻿using CryptographyLib.Expanders;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
+using CryptographyLib.Expanders;
 
 namespace CryptographyLib.Tests.Symmetric;
 
 [TestFixture]
 public class Magenta
 {
-    [Test]
-    public async Task Test()
+    private byte[] Key;
+    private SymmetricEncryptorContext Context;
+    
+    [SetUp]
+    public void SetUp()
     {
-        var random = new Random();
-
-        var key = new byte[7];
+        Key = new byte[32];
         
-        TestContext.CurrentContext.Random.NextBytes(key);
-        var expander = new DesExpander(key, Paddings.Padding.CreateInstance(Paddings.Padding.PaddingMode.PKCS7));
-        var context = new SymmetricEncryptorContext(CipherMode.Mode.ECB,
-            (ushort)random.Next(), 
-            new Des(expander),
+        var expander = new MagentaExpander(Key);
+        
+        TestContext.CurrentContext.Random.NextBytes(Key);
+        
+        Context = new SymmetricEncryptorContext(CipherMode.Mode.ECB,
+            TestContext.CurrentContext.Random.NextUShort(), 
+            new CryptographyLib.Symmetric.Magenta(expander),
             16);
-        Debug.Write(Encoding.UTF8.GetString(key));
+    }
 
-        await context.AsyncEncryptFile("Test.txt", "Encoded.txt");
-        await context.AsyncDecryptFile("Encoded.txt", "Decoded.txt");
+    [Test]
+    public async Task Crypt()
+    {
+        await Context.AsyncEncryptFile("some_small_File.txt", "Encoded.txt");
+        await Context.AsyncDecryptFile("Encoded.txt", "Decoded.txt");
     }
 }

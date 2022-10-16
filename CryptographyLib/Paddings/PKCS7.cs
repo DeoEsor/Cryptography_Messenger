@@ -31,15 +31,11 @@ internal class PKCS7 : IPadding
 	/// <inheritdoc />
 	public byte[] DeletePadding(byte[] input)
 	{
-		var index = input.Length - 1;
-		while (input[index] == input[index - 1])
-		{
-			index--;
-			if (index == 0)
-				break;
-		}
+		var index = input.Length - input[^1];
+		var res = new byte[index];
 
-		Array.Resize(ref input, index);
+		Array.Copy(input, res, index);
+		
 		return input;
 	}
 }

@@ -1,12 +1,18 @@
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Exporters.Csv;
 using CryptographyLib.Interfaces;
 using PaddingMode = CryptographyLib.Paddings.Padding.PaddingMode;
 
 namespace CryptographyLib.Tests.PaddingsTests;
 
+[MinColumn, MaxColumn, MedianColumn]
+[MarkdownExporterAttribute.GitHub]
+[CsvExporter(CsvSeparator.Comma)]
+[CsvMeasurementsExporter]
 [TestFixture]
 public class Pkcs7
 {
-    private IPadding Padding { get; set; }
+    private IPadding Padding { get; set; } = Paddings.Padding.CreateInstance(PaddingMode.PKCS7); 
     private byte[] Message { get; set; }
     
     [SetUp]
@@ -15,7 +21,7 @@ public class Pkcs7
         Padding =  Paddings.Padding.CreateInstance(PaddingMode.PKCS7);
     }
     
-    [Test]
+    [Test, Benchmark(Description = "PaddingTest")]
     public void PaddingTest()
     {
         Message = new byte[7];
@@ -26,7 +32,7 @@ public class Pkcs7
         Assert.That(Message.Length, Is.EqualTo(16));
     }
     
-    [Test]
+    [Test, Benchmark(Description = "DeletePaddingTest", Baseline = true)]
     public void DeletePaddingTest()
     {
         Message = new byte[7];

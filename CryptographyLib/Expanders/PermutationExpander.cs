@@ -1,15 +1,13 @@
-﻿using CryptographyLib.Paddings;
+﻿using CryptographyLib.Interfaces;
 using CryptographyLib.Symmetric.FeistelNetwork;
 
-namespace CryptographyLib.KeyExpanders;
+namespace CryptographyLib.Expanders;
 
 public class PermutationExpander : BaseExpander
 {
     private PBlock _pBlock = new PBlock();
     private byte[] _pBlockRule;
     public Lazy<byte[]> PermutedKey { get; }
-
-    public override int RoundsCount { get; protected set; }
     
     public PermutationExpander(byte[] originalKey, byte[] pBlockRule, IPadding padding = null!)
         : base(originalKey, padding)

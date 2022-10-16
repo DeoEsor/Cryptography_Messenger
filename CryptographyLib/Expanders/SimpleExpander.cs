@@ -1,16 +1,13 @@
 ﻿
 
 // ReSharper disable MemberCanBePrivate.Global
-namespace CryptographyLib.KeyExpanders;
+
+using CryptographyLib.Interfaces;
+
+namespace CryptographyLib.Expanders;
 
 public class SimpleExpander : BaseExpander
 {
-	public override int RoundsCount
-	{
-		get => OriginalKey.Length / BlockLength;
-		protected set { ; }
-	}
-
 	public  static SimpleExpander CreateInstance(byte[] originalKey,int blockLength)
 	{
 		return new SimpleExpander(originalKey, blockLength);
@@ -20,18 +17,22 @@ public class SimpleExpander : BaseExpander
 		: base(originalKey)
 	{
 		BlockLength = blockLength;
+		RoundsCount = OriginalKey.Length / BlockLength;
 	}
+	
 	public override IEnumerator<byte[]> GetExpander()
 	{
 		for (var i = 0; i < OriginalKey.Length / BlockLength; i++)
 		{
 			if (OriginalKey
 				    .Skip(i * BlockLength)
-				    .Take(BlockLength) 
-			    is not byte[] current) 
+				    .Take(BlockLength)
+				    .ToArray() 
+			    is not { } current) 
 				yield break;
+			
 			if (current.Length < BlockLength)
-				Padding?.ApplyPadding(current, BlockLength);
+				current = Padding.ApplyPadding(current, BlockLength);
 			yield return current;
 		}
 	}

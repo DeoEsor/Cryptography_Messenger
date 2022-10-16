@@ -4,65 +4,58 @@ namespace CryptographyLib.Symmetric;
 
 public sealed partial class Magenta : SymmetricEncryptorBase
 {
-	public Magenta(IExpandKey expandKey) 
-		: base(expandKey)
-	{}
+    public Magenta(IExpandKey expandKey) 
+        : base(expandKey)
+    {}
 
-	public override byte[] Encrypt(byte[] value)
+    public override byte[] Encrypt(byte[] value)
     {
-        var expander = 
-            new SimpleExpander(Key.SymmetricKey, 8)
-            .GetExpander();
-        
+        var expander = ExpandKey.ToArray();
         var res = new byte[value.Length];
-        
-        for (var i = 0; i < value.Length; i+=16)
-        {
-            Encoding(
-                value
-                    .Skip(i)
-                    .Take(8)
-                    .ToArray(),
-                
-                value
-                    .Skip(i + 8)
-                    .Take(8)
-                    .ToArray(),
-                
-                expander.Current)
-                .CopyTo(res, i);
-            
-            expander.MoveNext();
-        }
+        var count = value.Length / 16;
+        if (count == 0)
+            count = 1;
+
+        Parallel.For(0, count, 
+            i => 
+                Encoding(
+                value.AsSpan(i, 8),
+                value.AsSpan(i + 8, 8),
+                expander[i])
+            .CopyTo(res, i));
 
         return res;
     }
 
-    private byte[] Encoding(byte[] blockL, byte[] blockR, byte[] key)
+    private byte[] Encoding(Span<byte> blockL, Span<byte> blockR, byte[] key)
     {
-        var kL = key
-            .Take(8)
-            .ToArray();
-        
-        var kR = key
-            .TakeLast(8)
-            .ToArray();
-        
         for (var i = 0; i < 6; i++)
         {
-            var res = F(blockL, blockR, i is not (2 or 3) ? kL : kR);
+            var res = F(blockL, blockR, key);
             
             for (var g = 0; g < 8; g++)
                 (blockL[g], blockR[g]) = (res[0, g], res[1, g]);
+
+            if (i == 5) 
+                continue;
             
-            if (i != 5)
-                (blockL, blockR) = (blockR, blockL);
+            var tmp = blockL;
+            blockL = blockR;
+            blockR = tmp;
+
         }
 
-        return blockL
-            .Concat(blockR)
-            .ToArray();
+        var result = new byte[blockL.Length + blockR.Length];
+        
+        for (int i = 0; i < blockL.Length; i++)
+        {
+            result[i] = blockL[i];
+            result[i + 8] = blockR[i];
+        }
+
+        return result;
     }
 
-    public override byte[] Decrypt(byte[] value) => Encrypt(value);
+    public override byte[] Decrypt(byte[] value) 
+        => Encrypt(value);
 }

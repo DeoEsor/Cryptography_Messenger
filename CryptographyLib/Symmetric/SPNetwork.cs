@@ -1,4 +1,5 @@
-﻿using CryptographyLib.KeyExpanders;
+﻿using CryptographyLib.Expanders;
+using CryptographyLib.KeyExpanders;
 using CryptographyLib.Symmetric.FeistelNetwork;
 namespace CryptographyLib.Symmetric.SPNetwork;
 

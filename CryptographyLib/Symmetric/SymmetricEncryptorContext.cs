@@ -21,21 +21,20 @@ public sealed class SymmetricEncryptorContext
 
 	public byte[] Encrypt(byte[] value) =>  Mode.Encrypt(value);
 	public byte[] Decrypt(byte[] value) =>  Mode.Decrypt(value);
-	public async Task<byte[]> EncryptAsync(byte[] value) =>  Mode.Encrypt(value);
-	public async Task<byte[]> DecryptAsync(byte[] value) =>  Mode.Decrypt(value);
+	public Task<byte[]> EncryptAsync(byte[] value) =>  Task.FromResult(Mode.Encrypt(value));
+	public Task<byte[]> DecryptAsync(byte[] value) =>  Task.FromResult(Mode.Decrypt(value));
 		
 	public async Task AsyncEncryptFile(string pathFileInput, string  pathFileOutput)
 	{
-		if (File.Exists(pathFileOutput)) File.Delete(pathFileOutput);
+		if (File.Exists(pathFileOutput)) 
+			File.Delete(pathFileOutput);
 
-		var input = new ConcurrentQueue<byte>();
-			
-		using (var reader = new BinaryReader(File.Open(pathFileInput, FileMode.Open)))
-			while (reader.PeekChar() > -1)
-				input.Enqueue(reader.ReadByte());
+		byte[] value;
 
 		await using var writer = new BinaryWriter(File.Create(pathFileOutput));
-		writer.Write(Mode.Encrypt(input.ToArray()));
+		using var reader = new BinaryReader(File.Open(pathFileInput, FileMode.Open));
+		while ((value = reader.ReadBytes(128)).Length != 0)
+			writer.Write(await EncryptAsync(value));
 	}
 		
 	public async Task AsyncDecryptFile(string pathFileInput, string pathFileOutput)
@@ -43,12 +42,11 @@ public sealed class SymmetricEncryptorContext
 		if (File.Exists(pathFileOutput)) 
 			File.Delete(pathFileOutput);
 
-		var input = new ConcurrentQueue<byte>();
-		using (var reader = new BinaryReader(File.Open(pathFileInput, FileMode.Open)))
-			while (reader.PeekChar() > -1)
-				input.Enqueue(reader.ReadByte());
+		byte[] value;
 
-		await using (var writer = new BinaryWriter(File.Create(pathFileOutput)))
-			writer.Write(Mode.Decrypt(input.ToArray()));
+		await using var writer = new BinaryWriter(File.Create(pathFileOutput));
+		using var reader = new BinaryReader(File.Open(pathFileInput, FileMode.Open));
+		while ((value = reader.ReadBytes(128)).Length != 0)
+			writer.Write(await DecryptAsync(value));
 	}
 }

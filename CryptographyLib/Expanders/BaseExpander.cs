@@ -1,7 +1,10 @@
 ﻿using System.Collections;
+using CryptographyLib.Interfaces;
+using CryptographyLib.KeyExpanders;
 using CryptographyLib.Paddings;
+
 // ReSharper disable MemberCanBePrivate.Global
-namespace CryptographyLib.KeyExpanders;
+namespace CryptographyLib.Expanders;
 
 public abstract class BaseExpander : IExpandKey
 {
@@ -14,7 +17,7 @@ public abstract class BaseExpander : IExpandKey
 		get => _originalKey;
 		set => _originalKey = value;
 	}
-	public abstract int RoundsCount
+	public int RoundsCount
 	{
 		get;
 		protected set;
@@ -22,7 +25,7 @@ public abstract class BaseExpander : IExpandKey
 		
 	public int BlockLength { get; protected init; }
 
-	protected BaseExpander(byte[] originalKey, IPadding padding = null!)
+	protected BaseExpander(byte[] originalKey, IPadding? padding = null)
 	{
 		_originalKey = originalKey;
 		Padding = padding ?? new PKCS7();

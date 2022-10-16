@@ -1,13 +1,20 @@
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Exporters.Csv;
+using BenchmarkDotNet.Jobs;
 using CryptographyLib.Interfaces;
 using PaddingMode = CryptographyLib.Paddings.Padding.PaddingMode;
 
 namespace CryptographyLib.Tests.PaddingsTests;
 
+
+[MinColumn, MaxColumn, MedianColumn]
+[MarkdownExporterAttribute.GitHub]
+[CsvExporter(CsvSeparator.Comma)]
+[CsvMeasurementsExporter]
 [TestFixture]
 public class X923
 {
-    private IPadding Padding { get; set; }
+    private IPadding Padding { get; set; } =  Paddings.Padding.CreateInstance(PaddingMode.X923);
     private byte[] Message { get; set; }
     
     [SetUp]
@@ -16,7 +23,7 @@ public class X923
         Padding =  Paddings.Padding.CreateInstance(PaddingMode.X923);
     }
     
-    [Test, Benchmark]
+    [Test, Benchmark(Description = "PaddingTest")]
     public void PaddingTest()
     {
         Message = new byte[7];
@@ -27,7 +34,7 @@ public class X923
         Assert.That(Message.Length, Is.EqualTo(16));
     }
     
-    [Test, Benchmark]
+    [Test, Benchmark(Description = "DeletePaddingTest", Baseline = true)]
     public void DeletePaddingTest()
     {
         Message = new byte[7];

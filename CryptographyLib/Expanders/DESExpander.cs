@@ -1,6 +1,6 @@
-﻿using CryptographyLib.Paddings;
+﻿using CryptographyLib.Interfaces;
 
-namespace CryptographyLib.KeyExpanders;
+namespace CryptographyLib.Expanders;
 
 public class DesExpander : BaseExpander
 {
@@ -10,8 +10,7 @@ public class DesExpander : BaseExpander
         RoundsCount = 16;
         BlockLength = 6; // 6 * 8 = 48 bit vector
     }
-
-    public override int RoundsCount { get; protected set; }
+    
     public override IEnumerator<byte[]> GetExpander()
     {
         for (var i = 0; i < OriginalKey.Length / BlockLength; i++)

@@ -7,6 +7,7 @@
         <IsPackable>false</IsPackable>
 
         <LangVersion>preview</LangVersion>
+        <Configuration>RELEASE</Configuration>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,11 +19,17 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CryptographyLib\CryptographyLib.csproj" />
+      <ProjectReference Include="..\CryptographyLib\CryptographyLib.csproj" AdditionalProperties="Configuration=Release" />
     </ItemGroup>
 
     <ItemGroup>
       <None Update="Symmetric\Test.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="some_Large_File.txt">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="some_small_file.txt">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>
