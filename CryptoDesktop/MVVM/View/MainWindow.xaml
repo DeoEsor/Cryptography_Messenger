@@ -130,10 +130,24 @@
                     ItemContainerStyle="{StaticResource ContactCard}"
                     ItemsSource="{Binding Contacts}" />
                 <StackPanel>
-                    <TextBlock Text="Symmetric Key"/>
-                    <TextBox Text="{Binding TextSymmetricKey }" MaxHeight="50"
-                             TextAlignment="Justify" VerticalContentAlignment="Center"/>
-                    <TextBlock Text="Asymmetric Key"/>
+                    <Label
+                        Background="Transparent"
+                        Content="Symmetric Key"
+                        FontWeight="Medium"
+                        Foreground="Gray"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"/>
+                    <TextBox Height="50"
+                             Text="{Binding SymmetricKey.SymmetricKey, UpdateSourceTrigger=LostFocus}"
+                             Style="{StaticResource MessageBox}"
+                             Grid.ColumnSpan="2"/>
+                    <Label
+                        Background="Transparent"
+                        Content="Asymmetric Key"
+                        FontWeight="Medium"
+                        Foreground="Gray"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"/>
                     <TextBlock Text="{Binding TextAsymmetricKey}"/>
                 </StackPanel>
             </StackPanel>
