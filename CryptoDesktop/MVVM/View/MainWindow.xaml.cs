@@ -26,6 +26,9 @@ public partial class MainWindow : Window
 
 	private void Maximaze_Click(object sender, RoutedEventArgs e)
 	{
+		if (Application.Current.MainWindow is null)
+			return;
+		
 		Application.Current.MainWindow.WindowState = 
 			Application.Current.MainWindow.WindowState != WindowState.Maximized ?
 				WindowState.Maximized : WindowState.Normal;
@@ -33,6 +36,8 @@ public partial class MainWindow : Window
 
 	private void Minimaze_Click(object sender, RoutedEventArgs e)
 	{
+		if (Application.Current.MainWindow is null)
+			return;
 		Application.Current.MainWindow.WindowState = WindowState.Minimized;
 	}
 }

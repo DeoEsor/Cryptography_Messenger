@@ -12,6 +12,12 @@ public class CFB : CipherModeBase
 	{
 		IV = iv;
 	}
+	
+	public CFB(IAsymmetricEncryptor symmetricEncryptor,long iv, int blockLength = 8)
+		: base(symmetricEncryptor, blockLength)
+	{
+		IV = iv;
+	}
 
 	public override byte[] Encrypt(byte[] value)
 	{

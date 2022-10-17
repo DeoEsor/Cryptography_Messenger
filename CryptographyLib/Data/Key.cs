@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using NUnit.Framework;
 
 namespace CryptographyLib.Data;
 
@@ -13,6 +14,13 @@ public sealed class Key
 	public static Key CreateSymmetricKey(byte[] symmetricKey) 
 		=> new(symmetricKey);
 	
+	public static Key CreateSymmetricKey()
+	{
+		var x = new byte[32];
+		TestContext.CurrentContext.Random.NextBytes(x);
+		return new(x);
+	}
+
 	public static Key CreateAsymmetricKey(byte[] publicKey, byte[] privateKey)
 		=> new(publicKey, privateKey);
 

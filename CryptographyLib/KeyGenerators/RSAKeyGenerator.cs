@@ -77,7 +77,7 @@ public sealed class RSAKeyGenerator : AsymmetricKeyGenerator
                 if (gcd == 1)
                     break;
             }
-        return ((_e,mod),(Euler.EulerFunc(_e),mod));
+        return ((_e,mod),(Euler.EulerFunc((long)_e),mod));
     }
     
 }

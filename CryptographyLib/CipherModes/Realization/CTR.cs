@@ -10,8 +10,17 @@ public class CTR : CipherModeBase
 {
 	public Func<int, int> CounterCreationRule { get; set; }
 		
-	public CTR(long iv, Func<int, int> counterCreationRule, ISymmetricEncryptor symmetricEncryptor,
-		int blockLength = 8) : base(symmetricEncryptor, blockLength)
+	public CTR(ISymmetricEncryptor symmetricEncryptor, long iv, Func<int, int> counterCreationRule,
+		int blockLength = 8) 
+		: base(symmetricEncryptor, blockLength)
+	{
+		IV = iv;
+		CounterCreationRule = counterCreationRule;
+	}
+	
+	public CTR(IAsymmetricEncryptor symmetricEncryptor, long iv, Func<int, int> counterCreationRule,
+		int blockLength = 8) 
+		: base(symmetricEncryptor, blockLength)
 	{
 		IV = iv;
 		CounterCreationRule = counterCreationRule;

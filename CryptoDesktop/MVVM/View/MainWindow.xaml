@@ -120,15 +120,23 @@
                     Content="{StaticResource AddUserImage}"  
                     BorderThickness="0"/>
             </StackPanel>
-            <ListView
-                Background="Transparent"
-                BorderThickness="0"
-                Grid.Row="1"
-                SelectedItem="{Binding SelectedContact, 
-                Mode=TwoWay,
-                UpdateSourceTrigger=PropertyChanged}"
-                ItemContainerStyle="{StaticResource ContactCard}"
-                ItemsSource="{Binding Contacts}" />
+            <StackPanel Grid.Row="1">
+                <ListView
+                    Background="Transparent"
+                    BorderThickness="0"
+                    SelectedItem="{Binding SelectedContact, 
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged}"
+                    ItemContainerStyle="{StaticResource ContactCard}"
+                    ItemsSource="{Binding Contacts}" />
+                <StackPanel>
+                    <TextBlock Text="Symmetric Key"/>
+                    <TextBox Text="{Binding TextSymmetricKey }" MaxHeight="50"
+                             TextAlignment="Justify" VerticalContentAlignment="Center"/>
+                    <TextBlock Text="Asymmetric Key"/>
+                    <TextBlock Text="{Binding TextAsymmetricKey}"/>
+                </StackPanel>
+            </StackPanel>
 
 
             <StackPanel

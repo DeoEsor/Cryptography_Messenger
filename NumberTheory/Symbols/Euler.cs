@@ -16,9 +16,9 @@ public static class Euler
 	/// <remarks>Complexity O(sqrt(<paramref name="n"/>))</remarks>
 	private static BigInteger Phi(BigInteger n) 
 	{
-		var result = n;
+		BigInteger result = n;
 			
-		for (var i=2; i*i<=n; ++i)
+		for (BigInteger i=2; i*i<=n; ++i)
 			if (n % i == 0) 
 			{
 				while (n % i == 0)

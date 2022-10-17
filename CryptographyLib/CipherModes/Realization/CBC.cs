@@ -14,6 +14,12 @@ public class CBC : CipherModeBase
 	{
 		_iv = iv;
 	}
+	
+	public CBC(IAsymmetricEncryptor encryptor, ulong iv, int blocksCount) 
+		: base(encryptor, blocksCount)
+	{
+		_iv = iv;
+	}
 		
 	public override byte[] Encrypt(byte[] value)
 	{

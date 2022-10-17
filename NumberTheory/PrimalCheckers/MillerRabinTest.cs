@@ -6,11 +6,12 @@ public class MillerRabinTest : IPrimalChecker
 {
     private void GetComponents(BigInteger value, out BigInteger d, out BigInteger s)
     {
+        BigInteger two = new BigInteger(2);
         s = 0;
         d = value - 1;
-        while (d % 2 != 1)
+        while (d % two != 1)
         {
-            d /= 2;
+            d /= two;
             s++;
         }
     }

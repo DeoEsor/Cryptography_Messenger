@@ -36,6 +36,6 @@ internal class PKCS7 : IPadding
 
 		Array.Copy(input, res, index);
 		
-		return input;
+		return res;
 	}
 }

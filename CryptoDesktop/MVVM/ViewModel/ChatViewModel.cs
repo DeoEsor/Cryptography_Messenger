@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,8 @@ using CryptoDesktop.Annotations;
 using CryptoDesktop.gRPC;
 using CryptoDesktop.MVVM.Commands;
 using CryptoDesktop.MVVM.Model;
+using CryptographyLib.Data;
+using CryptographyLib.KeyGenerators;
 using DryIoc;
 using Microsoft.Win32;
 
@@ -18,12 +21,29 @@ public class ChatViewModel : INotifyPropertyChanged
     private ContactModel _selectedContact;
     private ContactModel _user;
     private string _message;
+    private string _textSymmetricKey;
     public ObservableCollection<ContactModel> Contacts { get; set; } = new ObservableCollection<ContactModel>();
     
     public RelayCommand SendCommand { get; set; }
     public RelayCommand OpenFileCommand { get; set; }
     public RelayCommand ChoiceParamsCommand { get; set; }
     public AuthClient CryptoClient { get; set; }
+
+    public Key SymmetricKey { get; set; } = Key.CreateSymmetricKey();
+    public Key AsymmetricKey { get; set; } = new ElGamalKeyGenerator().GenerateKeys();
+
+    public string TextSymmetricKey
+    {
+        get => _textSymmetricKey ??= Convert.ToBase64String(SymmetricKey.SymmetricKey);
+        set
+        {
+            if (value == _textSymmetricKey) return;
+            _textSymmetricKey = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string TextAsymmetricKey { get => "";  }
 
     public ContactModel SelectedContact
     {

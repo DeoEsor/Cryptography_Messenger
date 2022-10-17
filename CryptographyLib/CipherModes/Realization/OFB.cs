@@ -13,6 +13,12 @@ public class OFB : CipherModeBase
 	{
 		IV = iv;
 	}
+	
+	public OFB(IAsymmetricEncryptor symmetricEncryptor,long iv, int BlockLength = 8) 
+		: base(symmetricEncryptor, BlockLength)
+	{
+		IV = iv;
+	}
 
 	public override byte[] Encrypt(byte[] value)
 	{

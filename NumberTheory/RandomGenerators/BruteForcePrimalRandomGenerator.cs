@@ -10,14 +10,10 @@ public class BruteForcePrimalRandomGenerator : PrimalRandomGenerator
 
     public override BigInteger Generate(BigInteger min, BigInteger max)
     {
-        var buffer = max.ToByteArray();
-        var value = min + 1;
+        var value = new BigInteger(min.ToByteArray()) * 10;
 
-        while (!PrimalChecker.Check(value, 0.95f) && value < max)
-        {
-            TestContext.CurrentContext.Random.NextBytes(buffer);
-            value = new BigInteger(buffer);
-        }
+        while (!PrimalChecker.Check(value, 0.95f)) 
+            value ++;
 
         return value;
     }

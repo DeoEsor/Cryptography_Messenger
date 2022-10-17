@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using CryptographyLib.CipherModes;
 using CryptographyLib.Interfaces;
+using CryptographyLib.Paddings;
 
 // ReSharper disable InconsistentNaming
 namespace CryptographyLib.Symmetric;
@@ -46,7 +47,15 @@ public sealed class SymmetricEncryptorContext
 		await using var writer = new BinaryWriter(File.Create(pathFileOutput));
 		using var reader = new BinaryReader(File.Open(pathFileInput, FileMode.Open));
 		while ((value = reader.ReadBytes(128)).Length != 0)
-			writer.Write(await EncryptAsync(value));
+		{
+			if (value.Length != 128)
+			{
+				value = new PKCS7().DeletePadding(await DecryptAsync(value));
+				writer.Write(value);
+				break;
+			}
+			writer.Write(await DecryptAsync(value));
+		}
 	}
 
 	private async Task WriteBlock(StreamReader reader, StreamWriter writer, long from, long to)

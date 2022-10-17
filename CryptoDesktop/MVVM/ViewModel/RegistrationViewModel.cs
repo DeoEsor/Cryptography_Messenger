@@ -33,59 +33,95 @@ public sealed class RegistrationViewModel : INotifyPropertyChanged
     {
         if (obj is not PasswordBox passwordBox) return;
         var a =App.Container.Resolve<MainWindow>();
-        var reply = await CryptoClient.Register(UserName, passwordBox.Password);
+        try
+        {
+            var reply = await CryptoClient.Register(UserName, passwordBox.Password);
         
-        if (reply.StatusCode != (int)StatusCode.OK)
-        {
-            var messageBox = reply.StatusCode switch
+            if (reply.StatusCode != (int)StatusCode.OK)
             {
-                (int)StatusCode.Aborted => new MessageBoxCustom("Something with server, try later", MessageType.Error,
-                    MessageButtons.Ok).ShowDialog(),
-                (int)StatusCode.Unauthenticated => new MessageBoxCustom("This username is defined try another", MessageType.Error,
-                    MessageButtons.Ok).ShowDialog(),
-                _ => throw new NotImplementedException()
+                var messageBox = reply.StatusCode switch
+                {
+                    (int)StatusCode.Aborted => new MessageBoxCustom("Something with server, try later", MessageType.Error,
+                        MessageButtons.Ok).ShowDialog(),
+                    (int)StatusCode.Unauthenticated => new MessageBoxCustom("This username is defined try another", MessageType.Error,
+                        MessageButtons.Ok).ShowDialog(),
+                    _ => throw new NotImplementedException()
+                };
+
+                return;
+            }
+
+            var chat = App.Container.Resolve<ChatViewModel>();
+            chat.User = new ContactModel
+            {
+                Username = reply.User.Username,
+                ImageSource = reply.User.ImageSource,
+                Id = (int)reply.User.Id,
+                Color = reply.User.Color,
+                Status = "Online"
             };
-
-            return;
+            a.DataContext = chat;
+            a.Show();
+            Owner.Close();
         }
-
-        var chat = App.Container.Resolve<ChatViewModel>();
-        chat.User = new ContactModel
+        catch (Exception e)
         {
-            Username = reply.User.Username,
-            ImageSource = reply.User.ImageSource,
-            Id = (int)reply.User.Id,
-            Color = reply.User.Color,
-            Status = "Online"
-        };
-        a.DataContext = chat;
-        a.Show();
-        Owner.Close();
+            var chat = App.Container.Resolve<ChatViewModel>();
+            chat.User = new ContactModel
+            {
+                Username = "Personal Chat",
+                ImageSource = "",
+                Id = (int)0,
+                Color = "",
+                Status = "Offline"
+            };
+            a.DataContext = chat;
+            a.Show();
+            Owner.Close();
+        }
     }
 
     private async void Login(object obj)
     {
         if (obj is not PasswordBox passwordBox) return;
         var a =App.Container.Resolve<MainWindow>();
-        var reply = await CryptoClient.AuthAsync(UserName, passwordBox.Password);
+        try
+        {
+            var reply = await CryptoClient.AuthAsync(UserName, passwordBox.Password);
         
-        if (reply.StatusCode != (int)StatusCode.OK)
-        {
+            if (reply.StatusCode != (int)StatusCode.OK)
+            {
                 // ignored
-        }
+            }
 
-        var chat = App.Container.Resolve<ChatViewModel>();
-        chat.User = new ContactModel
+            var chat = App.Container.Resolve<ChatViewModel>();
+            chat.User = new ContactModel
+            {
+                Username = reply.User.Username,
+                ImageSource = reply.User.ImageSource,
+                Id = (int)reply.User.Id,
+                Color = reply.User.Color,
+                Status = "Online"
+            };
+            a.DataContext = chat;
+            a.Show();
+            Owner.Close();
+        }
+        catch (Exception e)
         {
-            Username = reply.User.Username,
-            ImageSource = reply.User.ImageSource,
-            Id = (int)reply.User.Id,
-            Color = reply.User.Color,
-            Status = "Online"
-        };
-        a.DataContext = chat;
-        a.Show();
-        Owner.Close();
+            var chat = App.Container.Resolve<ChatViewModel>();
+            chat.User = new ContactModel
+            {
+                Username = "Personal Chat",
+                ImageSource = "",
+                Id = (int)0,
+                Color = "",
+                Status = "Offline"
+            };
+            a.DataContext = chat;
+            a.Show();
+            Owner.Close();
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -12,7 +12,9 @@ public class RDH : CipherModeBase
 {
 	public byte[] Hash { get; set; }
 	public ulong Delta { get; set; }
-	public RDH(ISymmetricEncryptor symmetricEncryptor, long iv, byte[] hash,  int BlockLength = 8, ulong rd = UInt64.MinValue)
+
+	public RDH(ISymmetricEncryptor symmetricEncryptor, long iv, byte[] hash, int BlockLength = 8,
+		ulong rd = UInt64.MinValue)
 		: base(symmetricEncryptor, BlockLength)
 	{
 		IV = iv;
@@ -24,6 +26,19 @@ public class RDH : CipherModeBase
 		 *		Delta += 1;
 		 */
 	}
+
+	public RDH(IAsymmetricEncryptor asymmetricEncryptor, long iv, byte[] hash,  int BlockLength = 8, ulong rd = UInt64.MinValue)
+			: base(asymmetricEncryptor, BlockLength)
+		{
+			IV = iv;
+			Delta = rd == UInt64.MinValue ? TestContext.CurrentContext.Random.NextULong() : rd;
+			if (hash.Length == 128)
+				Hash = hash;
+			/*
+			 * if (Delta % 2 == 0)
+			 *		Delta += 1;
+			 */
+		}
 		
 	public override byte[] Encrypt(byte[] value)
 	{

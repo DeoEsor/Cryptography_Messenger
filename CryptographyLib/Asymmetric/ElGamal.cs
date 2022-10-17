@@ -11,18 +11,20 @@ using NumberTheory.RandomGenerators;
 
 namespace CryptographyLib.Asymmetric;
 
-public class ElGamal : IAsymmetricEncryptor
+public sealed class ElGamal : IAsymmetricEncryptor
 {
 	public AsymmetricKeyGenerator Generator { get; set; } = new ElGamalKeyGenerator();
 
 	public IExpandKey ExpandKey { get; set; }
 	
-	private PrimalRandomGenerator Random { get; set; } = new BruteForcePrimalRandomGenerator( new MillerRabinTest());
+	public PrimalRandomGenerator Random { get; set; } = new BruteForcePrimalRandomGenerator( new MillerRabinTest());
 	
-	private Key Key { get; set; }
+	public Key Key { get; set; }
 	
 	public byte[] Encrypt(byte[] value)
 	{
+		Key ??= Generator.GenerateKeys();
+		
 		var keyResult = Key.ParseElGamalKey();
 		if (!keyResult.IsSuccessful)
 		{
@@ -38,14 +40,15 @@ public class ElGamal : IAsymmetricEncryptor
 		var m = new BigInteger(value);
 
 		
-		var k = Random.Generate(1, p - 1);
+		var k = Random.Generate(3, p - BigInteger.One);
 
-		while (BigInteger.GreatestCommonDivisor(k, p - 1) != 1)
-			k = Random.Generate(1, p - 1);
+		while (BigInteger.GreatestCommonDivisor(k, p - BigInteger.One) != 1)
+			k = Random.Generate(1, p - BigInteger.One);
 		
 		var a = BigInteger.ModPow(g , k , p);
 		
-		var b = y.Pow(k) * m % p;
+		var b = y.FastPow(k, p) * m % p;
+		
 
 		return new[] { a, b }
 			.SerializeBigInts();
@@ -53,6 +56,7 @@ public class ElGamal : IAsymmetricEncryptor
 
 	public byte[] Decrypt(byte[] value)
 	{
+		Key ??= Generator.GenerateKeys();
 		var nums = value.DeserializeBigInts();
 		var keyResult = Key.ParseElGamalKey();
 		if (!keyResult.IsSuccessful)
@@ -68,7 +72,7 @@ public class ElGamal : IAsymmetricEncryptor
 		BigInteger a = nums[0], b = nums[1];
 
 		var m = BigInteger
-			        .Multiply(b, a.Pow(p - 1 - x)) % p;
+			        .Multiply(b, a.FastPow(p - BigInteger.One - x, p)) % p;
 
 		return m
 			.ToByteArray();

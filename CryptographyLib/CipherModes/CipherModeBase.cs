@@ -4,7 +4,9 @@ namespace CryptographyLib.CipherModes;
 public abstract class CipherModeBase : IEncryptor, IDecryptor
 {
 	private IEncryptor _encryptor = null!;
+	
 	private IDecryptor _decryptor = null!;
+	
 	protected readonly ISymmetricEncryptor SymmetricEncryptor;
 		
 	public int BlockLength { get; set; }
@@ -25,6 +27,14 @@ public abstract class CipherModeBase : IEncryptor, IDecryptor
 	protected CipherModeBase(ISymmetricEncryptor symmetricEncryptor, int blockLength = 8)
 	{
 		SymmetricEncryptor = symmetricEncryptor;
+		BlockLength = blockLength;
+	}
+	
+	protected CipherModeBase(IAsymmetricEncryptor encryptor, int blockLength = 8)
+	{
+		SymmetricEncryptor = null!;
+		Encryptor = encryptor;
+		Decryptor = encryptor;
 		BlockLength = blockLength;
 	}
 		

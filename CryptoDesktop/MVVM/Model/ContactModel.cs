@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -18,7 +19,19 @@ public sealed class ContactModel : INotifyPropertyChanged
     
     public ObservableCollection<MessageModel> Messages { get; set; }
     
-    public string LastMessage => Messages.Last().Message.Type == Message.MessageType.String ? Encoding.UTF8.GetString(Messages.Last().Message.MessageData) : "File";
+    public string LastMessage
+    {
+        get
+        {
+            if (Messages.Count == 0)
+                return String.Empty;
+            
+            var str = Messages.Last().Message.Type == Message.MessageType.String
+                ? Encoding.UTF8.GetString(Messages.Last().Message.MessageData)
+                : "File";
+            return str;
+        }
+    }
 
     public string Username
     {

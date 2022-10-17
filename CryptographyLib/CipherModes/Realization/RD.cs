@@ -20,6 +20,17 @@ public class RD : CipherModeBase
 		 *		Delta += 1;
 		 */
 	}
+	
+	public RD(IAsymmetricEncryptor symmetricEncryptor, long iv, int BlockLength = 8, ulong rd = UInt64.MinValue) 
+		: base(symmetricEncryptor, BlockLength)
+	{
+		IV = iv;
+		Delta = rd == UInt64.MinValue ? TestContext.CurrentContext.Random.NextULong() : rd;
+		/*
+		 * if (Delta % 2 == 0)
+		 *		Delta += 1;
+		 */
+	}
 
 	public override byte[] Encrypt(byte[] value)
 	{

@@ -99,7 +99,7 @@ public static class BigIntegerExtensions
     {
         var fact = new List<BigInteger>();
         BigInteger phi = Euler.EulerFunc(p),  n = phi;
-        for (var i=2; i*i<=n; ++i)
+        for (BigInteger i=2; i*i<=n; ++i)
             if (n % i == 0)
             {
                 fact.Add(i);
@@ -120,7 +120,7 @@ public static class BigIntegerExtensions
             if (ok)  
                 return res;
         }
-        return -1;
+        return BigInteger.MinusOne;
     }
 
     public static BigInteger Pow(this BigInteger value, BigInteger degree)
